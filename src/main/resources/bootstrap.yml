@@ -1,0 +1,24 @@
+server:
+  port: 9606
+
+spring:
+  application:
+    name: @project.artifactId@
+  profiles:
+    active: @profiles.active@
+  # 配置中心
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS-HOST:martin-cloud-nacos}:${NACOS-PORT:8848}
+      config:
+        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+        file-extension: ${file-extension}
+        extension-configs:
+          - data-id: application-${spring.profiles.active}.${file-extension}
+            group: DEFAULT_GROUP
+            refresh: true
+        shared-configs:
+          - data-id: application.${file-extension}
+            group: DEFAULT_GROUP
+            refresh: true
