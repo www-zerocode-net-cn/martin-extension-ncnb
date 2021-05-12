@@ -140,7 +140,7 @@ public class SwaggerCodegenServiceImpl implements SwaggerCodegenService {
         code.setDbUsername("root");
         code.setModuleName("");
         code.setParent("com.java2e.ncnb");
-        code.setTableName(new String[]{"api_design"});
+        code.setTableName("api_design");
         return mybatisPlusCodegen.generateService(code, outputDir);
     }
 

@@ -87,7 +87,7 @@ public class MybatisPlusCodegen {
         // 写于父类中的公共字段
         strategy.setSuperEntityColumns("");
         //配置哪些表要生成代码
-        String[] tables = code.getTableName();
+        String tables = code.getTableName();
         strategy.setInclude(tables);
         strategy.setControllerMappingHyphenStyle(true);
         ArrayList<TableFill> tableFills = new ArrayList<>();

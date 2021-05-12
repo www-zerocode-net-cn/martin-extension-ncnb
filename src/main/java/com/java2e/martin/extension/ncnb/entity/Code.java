@@ -40,7 +40,7 @@ public class Code implements Serializable {
     private Long id;
 
     @ApiModelProperty(value = "表名")
-    private String[] tableName;
+    private String tableName;
 
     @ApiModelProperty(value = "表注释")
     private String tableComment;
@@ -50,6 +50,10 @@ public class Code implements Serializable {
 
     @ApiModelProperty(value = "所属模块")
     private String moduleName;
+
+
+    @ApiModelProperty(value = "模块编码")
+    private String moduleCode;
 
     @ApiModelProperty(value = "包名")
     private String parent;
