@@ -1,0 +1,25 @@
+export default {
+  'app.common.err.record.exist': '記錄已存在',
+  'app.common.label.operation': '操作',
+  'app.common.label.memo': '備註',
+  'app.common.label.columns-display-settings': '顯隱',
+  'app.common.label.select-all': '全選',
+  'app.common.label.select-reversely': '反選',
+  'app.common.label.open-in-new-window': '點擊新窗口打開鏈接',
+  'app.common.label.yes': '是',
+  'app.common.label.no': '否',
+  'app.common.bale.more': '更多',
+  'app.common.validation.not-empty': '必填項不能為空',
+
+  'app.${table.entityPath}':'$!{table.comment}管理',
+
+  'app.${table.entityPath}.edit-the-${table.entityPath}': '编辑$!{table.comment}',
+  'app.${table.entityPath}.add-new-${table.entityPath}': '新增$!{table.comment}',
+  'app.${table.entityPath}.copy-new-${table.entityPath}': '复制$!{table.comment}',
+
+#foreach($field in ${table.fields})
+    #if("$!field.propertyName" != "id")
+  'app.${table.entityPath}.label.$!{field.propertyName}': '$!{field.comment}',
+    #end
+#end
+};

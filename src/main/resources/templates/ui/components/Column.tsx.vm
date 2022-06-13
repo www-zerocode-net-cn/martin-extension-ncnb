@@ -1,0 +1,52 @@
+        <ProForm.Group>
+
+          #foreach($field in ${table.fields})
+              #set($ignores = ["id","delFlag","tenantId","createTime","updateTime","creator","updater"])
+              #set($intTypes = ["int","bigint","smallint","id","tinyint","integer","mediumint"])
+              #if(!$ignores.contains($!field.propertyName))
+                #if($field.customMap.DATA_TYPE=='bit')
+          <ProFormSwitch
+            label={<FormattedMessage id="app.${table.entityPath}.label.$!{field.propertyName}"/>}
+            name="$!{field.propertyName}"
+            #if($field.customMap.IS_NULLABLE!='YES')
+            fieldProps={
+                {
+                  required: true,
+                  message: intl.formatMessage({id: 'app.${table.entityPath}.label.$!{field.propertyName}'}) + '不能为空',
+                },
+            }
+            #end
+          />
+                #else
+          <ProFormText
+            #if(${table.fields.size()} - 6<=9)
+            width="md"
+            #end
+            label={<FormattedMessage id="app.${table.entityPath}.label.$!{field.propertyName}"/>}
+            name="$!{field.propertyName}"
+            placeholder="请输入"
+            tooltip="最长为 #if($field.customMap.CHARACTER_MAXIMUM_LENGTH)${field.customMap.CHARACTER_MAXIMUM_LENGTH}#else${field.customMap.NUMERIC_PRECISION}#end 字符#if($field.customMap.IS_NULLABLE!='YES')，此项为必填项#end"
+            formItemProps={{
+              rules: [
+                #if($field.customMap.IS_NULLABLE!='YES')
+                {
+                  required: true,
+                  message: intl.formatMessage({id: 'app.${table.entityPath}.label.$!{field.propertyName}'}) + '不能为空',
+                },
+                #end
+                {
+                    #if(!$intTypes.contains($!field.propertyName))
+                  transform: (value) => {
+                      value.toString()
+                  },
+                    #end
+                  max: #if($field.customMap.CHARACTER_MAXIMUM_LENGTH)${field.customMap.CHARACTER_MAXIMUM_LENGTH}#else${field.customMap.NUMERIC_PRECISION}#end ,
+                  message: #[[`$]]#{intl.formatMessage({id: 'app.${table.entityPath}.label.$!{field.propertyName}'})+ '}不能大于 #if($field.customMap.CHARACTER_MAXIMUM_LENGTH)${field.customMap.CHARACTER_MAXIMUM_LENGTH}#else${field.customMap.NUMERIC_PRECISION}#end 个字符'`,
+                },
+              ],
+            }}
+          />
+                #end
+              #end
+          #end
+        </ProForm.Group>

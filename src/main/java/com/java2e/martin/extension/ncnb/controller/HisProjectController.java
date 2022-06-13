@@ -1,6 +1,8 @@
 package com.java2e.martin.extension.ncnb.controller;
 
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.java2e.martin.common.core.api.R;
 import com.java2e.martin.extension.ncnb.entity.DbChange;
@@ -40,12 +42,12 @@ public class HisProjectController {
     /**
      * 加载历史项目版本号
      *
-     * @param projectId String
+     * @param map Map
      * @return R
      */
-    @GetMapping("/hisProject/load/{projectId}")
-    public R loadHistory(@PathVariable String projectId) {
-        return dbChangeService.loadHistory(projectId);
+    @PostMapping("/hisProject/load")
+    public R loadHistory(@RequestBody Map map) {
+        return dbChangeService.loadHistory(map);
 
     }
 
@@ -64,12 +66,12 @@ public class HisProjectController {
     /**
      * 删除项目下所有版本版本
      *
-     * @param projectId String
+     * @param map Map
      * @return R
      */
-    @PostMapping("/hisProject/deleteAll/{projectId}")
-    public R deleteAllHistory(@PathVariable String projectId) {
-        return dbChangeService.deleteAllHistory(projectId);
+    @PostMapping("/hisProject/deleteAll")
+    public R deleteAllHistory(@RequestBody Map map) {
+        return dbChangeService.deleteAllHistory(map);
 
     }
 
@@ -81,16 +83,23 @@ public class HisProjectController {
             dbChange.setChanges(JsonUtil.generate(map.get("changes")).getBytes());
             dbChange.setProjectJSON(JsonUtil.generate(map.get("projectJSON")).getBytes());
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("", e);
         }
-        dbChange.setId(RandomUtil.simpleUUID());
+        String id = (String) map.get("id");
+        if (StrUtil.isBlank(id)) {
+            dbChange.setId(IdUtil.fastSimpleUUID());
+        }else {
+            dbChange.setId(id);
+        }
         dbChange.setProjectId((String) map.get("projectId"));
         dbChange.setVersion((String) map.get("version"));
         dbChange.setVersionDate((String) map.get("versionDate"));
         dbChange.setVersionDesc((String) map.get("versionDesc"));
-        dbChangeService.save(dbChange);
+        dbChange.setDbKey((String) map.get("dbKey"));
+        dbChangeService.saveOrUpdate(dbChange);
         QueryWrapper<DbChange> wrapper = new QueryWrapper<>();
-        wrapper.eq("projectId", (String) map.get("projectId"));
+        wrapper.eq("project_id", (String) map.get("projectId"));
+        wrapper.eq("db_key", (String) map.get("dbKey"));
         wrapper.orderBy(false, false, "version");
         List<DbChange> dbChanges = dbChangeService.list(wrapper);
         return dbChangeService.getHashMapsByDbChanges(dbChanges);

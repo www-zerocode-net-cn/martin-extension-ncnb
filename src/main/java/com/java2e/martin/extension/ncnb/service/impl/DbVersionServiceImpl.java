@@ -1,6 +1,8 @@
 package com.java2e.martin.extension.ncnb.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.java2e.martin.common.data.mybatis.service.impl.MartinServiceImpl;
+import com.java2e.martin.extension.ncnb.entity.DbChange;
 import com.java2e.martin.extension.ncnb.entity.DbVersion;
 import com.java2e.martin.extension.ncnb.mapper.DbVersionMapper;
 import com.java2e.martin.extension.ncnb.service.DbVersionService;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -20,29 +23,36 @@ import java.util.UUID;
  * @since 2020-10-29
  */
 @Service
-public class DbVersionServiceImpl extends ServiceImpl<DbVersionMapper, DbVersion> implements DbVersionService {
+public class DbVersionServiceImpl extends MartinServiceImpl<DbVersionMapper, DbVersion> implements DbVersionService {
 
     @Override
-    public String dbversion(String projectId) {
-        return baseMapper.dbversion(projectId);
+    public String dbversion(Map map) {
+        return baseMapper.dbversion(map);
     }
 
     @Override
-    public Integer rebaseline(String projectId) {
-        return baseMapper.rebaseline(projectId);
+    public List<String> checkdbversion(Map map) {
+        return baseMapper.checkdbversion(map);
+    }
+
+    @Override
+    public Integer rebaseline(Map map) {
+        return baseMapper.rebaseline(map);
     }
 
     @Override
     public Boolean saveDbVersion(Map map) {
         DbVersion dbVersion = new DbVersion();
-        String id = UUID.randomUUID().toString().replaceAll("-", "");
-        dbVersion.setId(id);
         dbVersion.setDbVersion((String) map.get("version"));
         dbVersion.setVersionDesc((String) map.get("versionDesc"));
         dbVersion.setProjectId((String) map.get("projectId"));
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String createTime = LocalDateTime.now().format(formatter);
-        dbVersion.setCreatedTime(createTime);
+        dbVersion.setDbKey((String) map.get("dbKey"));
         return this.save(dbVersion);
+    }
+
+    @Override
+    protected void setEntity() {
+        this.clz = DbVersion.class;
+
     }
 }

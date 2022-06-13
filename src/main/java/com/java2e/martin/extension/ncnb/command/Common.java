@@ -41,7 +41,7 @@ public class Common {
             Statement statement = conn.createStatement();
             for (String s : sqls) {
                 if (StrUtil.isNotBlank(s)) {
-                    log.info("=========sql===========", s);
+                    log.info("=========sql==========={}", s);
                     statement.addBatch(s);
                 }
             }

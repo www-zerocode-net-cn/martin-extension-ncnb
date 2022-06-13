@@ -16,9 +16,7 @@ spring:
         file-extension: ${file-extension}
         extension-configs:
           - data-id: application-${spring.profiles.active}.${file-extension}
-            group: DEFAULT_GROUP
             refresh: true
         shared-configs:
           - data-id: application.${file-extension}
-            group: DEFAULT_GROUP
             refresh: true

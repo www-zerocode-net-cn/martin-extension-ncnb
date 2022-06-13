@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class Module implements Serializable {
+public class Module implements Serializable, Cloneable {
     @JSONField(
             ordinal = 10
     )
@@ -22,7 +22,9 @@ public class Module implements Serializable {
             ordinal = 30
     )
     private List<Entity> entities = new ArrayList();
-
+    private String key;
+    private String label;
+    private List<ModuleImage> graphImages;
     public Module() {
     }
 }

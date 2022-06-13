@@ -52,7 +52,7 @@ public class DbRebaseLineCommand extends AbstractDBCommand<R> {
             sqlList.add(initVersion);
         } else {
             //重建版本信息
-            String rebaseVersion = "delete from db_version where db_version!='v0.0.0' ;";
+            String rebaseVersion = "delete from db_version where db_version!='0.0.0' ;";
             sqlList.add(rebaseVersion);
             log.info("=========rebaseVersion===========", rebaseVersion);
         }

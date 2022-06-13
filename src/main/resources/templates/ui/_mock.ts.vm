@@ -1,0 +1,30 @@
+import { Request, Response } from 'express';
+import { addTableList, editTableList, getTableList, deleteTableList } from '../../../../mock/utils';
+import { $!{entity}ListItem } from './model';
+
+// mock tableListDataSource
+const tableListDataSource: $!{entity}ListItem[] = [];
+
+function get$!{entity}s(req: Request, res: Response) {
+  let dataSource = [...tableListDataSource];
+  return getTableList(req, res, dataSource);
+}
+
+function delete$!{entity}s(req: Request, res: Response) {
+  return deleteTableList(req, res, tableListDataSource);
+}
+
+function add$!{entity}(req: Request, res: Response) {
+  return addTableList(req, res, tableListDataSource);
+}
+
+function edit$!{entity}(req: Request, res: Response) {
+  return editTableList(req, res, tableListDataSource);
+}
+
+export default {
+  'POST /api/${table.entityPath}/page': get$!{entity}s,
+  'POST /api/${table.entityPath}/add': add$!{entity},
+  'PUT /api/${table.entityPath}/edit': edit$!{entity},
+  'DELETE /api/${table.entityPath}/delete': delete$!{entity}s,
+};

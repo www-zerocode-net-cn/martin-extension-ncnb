@@ -1,5 +1,6 @@
 package com.java2e.martin.extension.ncnb.controller;
 
+import cn.hutool.core.util.IdUtil;
 import com.java2e.martin.common.core.api.ApiErrorCode;
 import com.java2e.martin.common.core.api.R;
 import com.java2e.martin.extension.ncnb.command.DBReverseParseCommand;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -53,33 +55,40 @@ public class ConnectorController {
 
     @PostMapping("dbversion")
     public R dbversion(@RequestBody Map map) {
-        String version = dbVersionService.dbversion((String) map.get("projectId"));
+        String version = dbVersionService.dbversion(map);
         if (null == version) {
             DbVersion dbVersion = new DbVersion();
             dbVersion.setProjectId((String) map.get("projectId"));
-            dbVersion.setDbVersion("v0.0.0");
+            dbVersion.setDbVersion("0.0.0");
             dbVersion.setVersionDesc("基线版本，新建版本时请勿低于该版本");
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String createTime = LocalDateTime.now().format(formatter);
-            dbVersion.setCreatedTime(createTime);
+            dbVersion.setDbKey((String) map.get("dbKey"));
             dbVersionService.save(dbVersion);
-            version = "v0.0.0";
+            version = "0.0.0";
         }
         return R.ok(version);
+
+    }
+
+    @PostMapping("checkdbversion")
+    public R checkdbversion(@RequestBody Map map) {
+        List<String> version = dbVersionService.checkdbversion(map);
+        return R.ok(version.size());
 
     }
 
 
     @PostMapping("rebaseline")
     public R rebaseline(@RequestBody Map map) {
-        return R.ok(dbVersionService.rebaseline((String) map.get("projectId")));
+        return R.ok(dbVersionService.rebaseline((map)));
     }
 
     @PostMapping("dbsync")
     public R dbsync(@RequestBody Map map) {
         DbSyncCommand dbSyncCommand = new DbSyncCommand();
         R result = dbSyncCommand.exec(map);
-        if (ApiErrorCode.OK.equals(result.getCode())) {
+        if (ApiErrorCode.OK.getCode() == result.getCode()) {
             dbVersionService.saveDbVersion(map);
         }
         return result;
@@ -94,18 +103,17 @@ public class ConnectorController {
 
     @PostMapping("updateVersion")
     public R updateVersion(@RequestBody Map<String, Object> params) {
-        String id = UUID.randomUUID().toString().replaceAll("-", "");
+        String id = IdUtil.fastSimpleUUID();
         String version = (String) params.get("version");
+        String dbKey = (String) params.get("dbKey");
         String versionDesc = (String) params.get("versionDesc");
         String projectId = (String) params.get("projectId");
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String createTime = LocalDateTime.now().format(formatter);
         DbVersion dbVersion = new DbVersion();
         dbVersion.setId(id);
         dbVersion.setDbVersion(version);
+        dbVersion.setDbKey(dbKey);
         dbVersion.setVersionDesc(versionDesc);
         dbVersion.setProjectId(projectId);
-        dbVersion.setCreatedTime(createTime);
         return R.ok(dbVersionService.save(dbVersion));
     }
 

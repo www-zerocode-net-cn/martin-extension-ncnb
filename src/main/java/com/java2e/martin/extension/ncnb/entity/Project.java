@@ -1,13 +1,20 @@
 package com.java2e.martin.extension.ncnb.entity;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
+import cn.hutool.core.date.DateTime;
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 
 import java.io.Serializable;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.java2e.martin.common.bean.system.User;
+import com.java2e.martin.common.core.annotation.BindField;
+import com.java2e.martin.common.core.constant.CommonConstants;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -23,6 +30,7 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
+@TableName("project")
 public class Project implements Serializable {
 
     /**
@@ -61,22 +69,28 @@ public class Project implements Serializable {
     /**
      * 创建人
      */
-    private String createdBy;
+    @TableField(fill = FieldFill.INSERT)
+    @BindField(entity = User.class, field = CommonConstants.USER_USERNAME)
+    private String creator;
 
     /**
      * 创建时间
      */
-    private Date createdTime;
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDateTime createTime;
 
     /**
      * 更新人
      */
-    private String updatedBy;
+    @TableField(fill = FieldFill.UPDATE)
+    @BindField(entity = User.class, field = CommonConstants.USER_USERNAME)
+    private String updater;
 
     /**
      * 更新时间
      */
-    private Date updatedTime;
+    @TableField(fill = FieldFill.UPDATE)
+    private LocalDateTime updateTime;
 
 
 }

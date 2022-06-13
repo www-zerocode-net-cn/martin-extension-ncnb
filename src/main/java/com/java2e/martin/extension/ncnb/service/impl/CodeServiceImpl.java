@@ -5,6 +5,7 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.ZipUtil;
 import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
@@ -352,6 +353,7 @@ public class CodeServiceImpl extends MartinServiceImpl<CodeMapper, Code> impleme
         gc.setFileOverride(true);
         gc.setAuthor(code.getAuthor());
         gc.setOpen(false);
+        gc.setIdType(IdType.UUID);
         //实体属性 Swagger2 注解
         gc.setSwagger2(true);
         // 自定义文件命名，注意 %s 会自动填充表实体属性！

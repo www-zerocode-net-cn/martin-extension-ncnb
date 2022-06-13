@@ -1,20 +1,33 @@
 package com.java2e.martin.extension.ncnb.controller;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.java2e.martin.common.core.api.R;
+import com.java2e.martin.common.core.constant.OssConstants;
+import com.java2e.martin.common.oss.service.OssTemplate;
+import com.java2e.martin.common.security.userdetail.MartinUser;
+import com.java2e.martin.common.security.util.SecurityContextUtil;
 import com.java2e.martin.extension.ncnb.entity.Project;
 import com.java2e.martin.extension.ncnb.service.ProjectService;
+import com.java2e.martin.extension.ncnb.service.WsService;
 import com.java2e.martin.extension.ncnb.util.JsonUtil;
 import com.java2e.martin.extension.ncnb.util.Query;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.InsertProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 import java.util.Map;
@@ -36,37 +49,69 @@ public class ProjectController {
     @Autowired
     private ProjectService projectService;
 
+    @Autowired
+    private OssTemplate ossTemplate;
+
     /**
      * 添加
      *
      * @param map Map
      * @return ExecResult
      */
-    @PostMapping("/save")
-    public R save(@RequestBody Map map) {
+    @SneakyThrows
+    @PostMapping("/add")
+    public R add(@RequestBody Map map) {
         QueryWrapper<Project> wrapper = new QueryWrapper<>();
         Object projectName = map.get("projectName");
+        Object description = map.get("description");
         if (projectName == null) {
-            return R.failed("projectName为空");
+            return R.failed("项目名为空");
+        }
+        if (description == null) {
+            return R.failed("项目描述为空");
         }
         wrapper.eq("project_name", projectName);
         Project selectOne = projectService.getOne(wrapper);
         Project project = new Project();
 
-        try {
-            project.setProjectName(projectName.toString());
-            project.setConfigJSON(JsonUtil.generate(map.get("configJSON")).getBytes());
-            project.setProjectJSON(JsonUtil.generate(map.get("projectJSON")).getBytes());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return R.failed(e.getMessage());
-        }
+        project.setProjectName(projectName.toString());
+        project.setDescription(description.toString());
+        project.setConfigJSON(JsonUtil.generate(map.get("configJSON")).getBytes());
+        project.setProjectJSON(JsonUtil.generate(map.get("projectJSON")).getBytes());
+
         if (selectOne == null) {
-            return R.ok(projectService.save(project));
+            boolean save = projectService.save(project);
+            return R.ok(save);
         } else {
-            return R.ok(projectService.update(project, wrapper));
+            return R.failed("项目「" + projectName + "」已存在");
         }
     }
+
+    /**
+     * 保存
+     *
+     * @param map Map
+     * @return ExecResult
+     */
+    @SneakyThrows
+    @PostMapping("/save")
+    public R save(@RequestBody Map map) {
+        QueryWrapper<Project> wrapper = new QueryWrapper<>();
+        String id = (String) map.get("id");
+        if (StrUtil.isBlank(id)) {
+            return R.failed("id为空");
+        }
+        wrapper.eq("id", id);
+        Project selectOne = projectService.getOne(wrapper);
+        Project project = new Project();
+
+        project.setConfigJSON(JsonUtil.generate(map.get("configJSON")).getBytes());
+        project.setProjectJSON(JsonUtil.generate(map.get("projectJSON")).getBytes());
+
+        boolean update = projectService.update(project, wrapper);
+        return R.ok(update);
+    }
+
 
     @GetMapping("/info/{projectId}")
     public R projectService(@PathVariable String projectId) {
@@ -93,7 +138,6 @@ public class ProjectController {
      */
     @PostMapping("/update")
     public R<Boolean> update(@RequestBody Project project) {
-        project.setUpdatedTime(new Date());
         return R.ok(projectService.updateById(project));
     }
 
@@ -114,11 +158,26 @@ public class ProjectController {
      * @param params 分页以及查询参数
      * @return Page
      */
-    @PostMapping("/page")
-    public IPage getPage(@RequestBody Map params) {
-        return projectService.page(new Query<>(params));
+    @GetMapping("/page")
+    public R page(@RequestParam Map params) {
+        String order = params.get("order").toString();
+        LambdaQueryWrapper<Project> lambdaQueryWrapper = new LambdaQueryWrapper();
+        if (StrUtil.equals(order, "createTime")) {
+            lambdaQueryWrapper.orderByDesc(Project::getCreateTime);
+        } else if (StrUtil.equals(order, "updateTime")) {
+            lambdaQueryWrapper.orderByDesc(Project::getUpdateTime);
+        }
+        MartinUser accessUser = SecurityContextUtil.getAccessUser();
+        String userId = accessUser.getId();
+        log.info("userId:{}", userId);
+        lambdaQueryWrapper.eq(Project::getCreator, userId);
+        return R.ok(projectService.page(new Query<>(params), lambdaQueryWrapper));
     }
 
+    @PostMapping("upload")
+    public R uploadTest(@RequestParam("file") MultipartFile file) {
+        return R.ok(ossTemplate.upload(OssConstants.DEFAULT_BUCKET, file, true));
+    }
 
 }
 

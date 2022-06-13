@@ -1,7 +1,11 @@
 package com.java2e.martin.extension.ncnb.model;
 
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
 import com.deepoove.poi.data.PictureRenderData;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.InputStream;
 import java.io.Serializable;
@@ -15,9 +19,15 @@ import java.io.Serializable;
  */
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ModuleImage implements Serializable, Cloneable {
-    private String path;
-    private InputStream inputStream;
+    private String  name;
+    private String  chnname;
+    private JSONArray entities;
+    private JSONArray graphCanvas;
+    private JSONArray associations;
+
     private PictureRenderData image;
 
 }

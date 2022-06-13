@@ -1,0 +1,29 @@
+package ${package.Service};
+
+#if($cfg.moduleName=='system')
+import com.java2e.martin.common.bean.${cfg.moduleName}.$!{entity};
+#else
+import $!{package.Entity}.$!{entity};
+#end
+import com.java2e.martin.common.data.mybatis.service.MartinService;
+import org.springframework.transaction.annotation.Transactional;
+
+/**
+ * <p>
+ * $!{table.comment} 服务类
+ * </p>
+ *
+ * @author ${author}
+ * @version 1.0
+ * @date ${date}
+ * @describtion
+ * @since 1.0
+ */
+#if(${kotlin})
+interface ${table.serviceName} : ${superServiceClass}<${entity}>
+#else
+@Transactional(rollbackFor = Exception.class)
+public interface ${table.serviceName} extends ${superServiceClass}<${entity}> {
+
+}
+#end

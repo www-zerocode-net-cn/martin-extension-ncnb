@@ -1,0 +1,126 @@
+import ProTable from '@ant-design/pro-table';
+import {FormattedMessage} from "@@/plugin-locale/localeExports";
+import {page} from "@/services/crud";
+import Add from "@/pages/${cfg.moduleName}/${table.entityPath}/components/Add";
+import Update from "@/pages/${cfg.moduleName}/${table.entityPath}/components/Update";
+import Delete from "@/pages/${cfg.moduleName}/${table.entityPath}/components/Delete";
+import {useRef} from "react";
+import {ActionType} from "@ant-design/pro-table/es/typing";
+import Copy from "@/pages/${cfg.moduleName}/${table.entityPath}/components/Copy";
+import {Access, useAccess} from "@@/plugin-access/access";
+import type {ProColumns} from '@ant-design/pro-table';
+
+export type $!{entity}Item = {
+#set($NUMBER = ["TINYINT","SMALLINT","MEDIUMINT","INT","INTEGER","BIGINT","FLOAT","DOUBLE","DECIMAL","tinyint","smallint","int","bigint","decimal","numeric","smallmoney","money","float","real"])
+#set($BOOLEAN = ["bit","boolean","BIT","BOOLEAN"])
+#foreach($field in ${table.fields})
+  #if($NUMBER.contains($!field.customMap.DATA_TYPE))
+  $!{field.propertyName}#if($field.customMap.IS_NULLABLE=='YES')?#end: number#if($field.propertyName=='id') | null#end;
+  #elseif($BOOLEAN.contains($!field.customMap.DATA_TYPE))
+  $!{field.propertyName}#if($field.customMap.IS_NULLABLE=='YES')?#end: boolean;
+  #else
+  $!{field.propertyName}#if($field.customMap.IS_NULLABLE=='YES')?#end: string#if($field.propertyName=='id') | null#end;
+  #end
+#end
+};
+
+export default () => {
+  const access = useAccess();
+  const ref = useRef<ActionType>();
+  const refresh = () => {
+    ref.current?.reload();
+  }
+  const columns: ProColumns<$!{entity}Item>[] = [
+    {
+      title: <FormattedMessage id="pages.table.sort"/>,
+      dataIndex: 'id',
+      valueType: 'indexBorder',
+      width: 48,
+    },
+   #foreach($field in ${table.fields})
+    #set($ignores = ["id","delFlag","tenantId","creator","updater","pwd"])
+    #set($noSearch = ["createTime","updateTime"])
+    #if(!$ignores.contains($!field.propertyName))
+    {
+      title: <FormattedMessage id="app.${table.entityPath}.label.$!{field.propertyName}"/>,
+      dataIndex: '$!{field.propertyName}',
+      sorter: true,
+      ellipsis: true,
+      #if($!{field.propertyName.indexOf("Time")}!=-1)
+      valueType: 'dateTime',
+      #end
+      #if($noSearch.contains($!field.propertyName))
+      hideInSearch: true,
+      #end
+      #if($!{field.propertyName.indexOf("avatar")}!=-1)
+      valueType: 'avatar',
+      #end
+    },
+    #end
+  #end
+    {
+      title: <FormattedMessage id="app.${table.entityPath}.label.creator"/>,
+      dataIndex: 'creatorName',
+      ellipsis: true,
+      hideInSearch: true,
+    },
+    {
+      title: <FormattedMessage id="app.${table.entityPath}.label.updater"/>,
+      dataIndex: 'updaterName',
+      ellipsis: true,
+      hideInSearch: true,
+    },
+
+    {
+      title: <FormattedMessage id="app.common.label.operation"/>,
+      width: 180,
+      key: 'option',
+      valueType: 'option',
+      render: (dom, entity) => [
+        <Access key={"edit"} accessible={access.access.includes('$!{table.name}_edit')}>
+          <Update key={entity.id} values={entity} refresh={refresh}/>
+        </Access>,
+        <Access key={"del"} accessible={access.access.includes('$!{table.name}_del')}>
+          <Delete key={entity.id} values={entity} refresh={refresh}/>
+        </Access>,
+        <Access key={"copy"} accessible={access.access.includes('$!{table.name}_add')}>
+          <Copy key={entity.id} values={entity} refresh={refresh}/>
+        </Access>,
+      ],
+    },
+  ];
+
+  return (
+    <ProTable<$!{entity}Item>
+      actionRef={ref}
+      columns={columns}
+      request={async (params, sorter) => {
+        const result = await page('/$!{cfg.moduleCode}/${table.entityPath}/page', params, sorter);
+        return {
+          data: result.data.records,
+          // success 请返回 true，
+          // 不然 table 会停止解析数据，即使有数据
+          success: result.code === 200,
+          // 不传会使用 data 的长度，如果是分页一定要传
+          total: result.data.total,
+        };
+      }}
+      rowKey="id"
+      pagination={{
+        showQuickJumper: true,
+        pageSize: 10,
+      }}
+      dateFormatter="string"
+      toolbar={{
+        title: <FormattedMessage id="app.${table.entityPath}"/>,
+      }}
+      toolBarRender={() => [
+        <Access key={"add"} accessible={access.access.includes('$!{table.name}_add')}>
+          <Add refresh={refresh}/>
+        </Access>,
+      ]}
+    />
+  );
+
+
+};

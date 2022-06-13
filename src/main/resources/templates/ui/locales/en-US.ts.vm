@@ -1,0 +1,26 @@
+export default {
+  'app.common.err.record.exist': 'The record already exists',
+  'app.common.label.operation': 'Operation',
+  'app.common.label.memo': 'Remarks',
+  'app.common.label.columns-display-settings': 'Column Toggle',
+  'app.common.label.select-all': 'Check All',
+  'app.common.label.select-reversely': 'Inverse',
+  'app.common.label.open-in-new-window': 'Open in a new window',
+  'app.common.label.yes': 'Yes',
+  'app.common.label.no': 'No',
+  'app.common.bale.more': 'More',
+  'app.common.validation.not-empty': 'Required items cannot be empty',
+
+    'app.${table.entityPath}':'$!{table.comment}管理',
+
+  'app.${table.entityPath}.edit-the-${table.entityPath}': '编辑$!{table.comment}',
+  'app.${table.entityPath}.add-new-${table.entityPath}': '新增$!{table.comment}',
+  'app.${table.entityPath}.copy-new-${table.entityPath}': '复制$!{table.comment}',
+
+#foreach($field in ${table.fields})
+    #if("$!field.propertyName" != "id")
+  'app.${table.entityPath}.label.$!{field.propertyName}': '$!{field.comment}',
+    #end
+#end
+
+};

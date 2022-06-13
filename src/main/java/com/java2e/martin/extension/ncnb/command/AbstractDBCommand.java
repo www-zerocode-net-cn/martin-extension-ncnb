@@ -27,7 +27,7 @@ public abstract class AbstractDBCommand<T> {
     }
 
     public void init(Map<String, String> params) {
-        this.driverClassName = (String) params.get("driver_class_name");
+        this.driverClassName = (String) params.get("driverClassName");
         this.url = (String) params.get("url");
         this.username = (String) params.get("username");
         this.password = (String) params.get("password");

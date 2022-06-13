@@ -1,0 +1,40 @@
+import React from 'react';
+import {message, Popconfirm} from 'antd';
+import {FormattedMessage} from "@@/plugin-locale/localeExports";
+import {$!{entity}Item} from "@/pages/${cfg.moduleName}/${table.entityPath}";
+import {del} from "@/services/crud";
+import {useIntl} from "umi";
+
+export type DeleteProps = {
+  refresh: () => void;
+  values: Partial<$!{entity}Item>;
+};
+
+const Delete: React.FC<DeleteProps> = (props) => {
+  const intl = useIntl();
+  return (
+    <>
+      <Popconfirm
+        title={<FormattedMessage id={"component.inlinePopconfirmBtn.title"}/>}
+        okText={<FormattedMessage id={"component.inlinePopconfirmBtn.text"}/>}
+        cancelText={<FormattedMessage id={"component.common.text.cancel"}/>}
+        onConfirm={async () => {
+          const result = await del('/$!{cfg.moduleCode}/${table.entityPath}', props.values);
+          if (result.code === 200) {
+            message.success(
+              intl.formatMessage({
+                id: 'component.common.text.deleted-success',
+              })
+            );
+            props.refresh();
+          } else {
+            message.error(result.msg);
+          }
+        }}
+      >
+        <a key="delete"><FormattedMessage id="component.common.text.delete"/></a>
+      </Popconfirm>
+    </>
+  );
+};
+export default Delete;

@@ -1,0 +1,159 @@
+package ${package.Controller};
+
+import cn.hutool.core.collection.CollUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+#if($cfg.moduleName=='system')
+import com.java2e.martin.common.bean.${cfg.moduleName}.$!{entity};
+#else
+import $!{package.Entity}.$!{entity};
+#end
+import $!{package.Service}.$!{table.serviceName};
+import com.java2e.martin.common.core.api.R;
+import com.java2e.martin.common.log.annotation.MartinLog;
+import io.swagger.annotations.Api;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+#if(${restControllerStyle})
+import org.springframework.web.bind.annotation.RestController;
+#else
+import org.springframework.stereotype.Controller;
+#end
+
+import javax.validation.Valid;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+
+#if(${superControllerClassPackage})
+import ${superControllerClassPackage};
+#end
+
+/**
+ * <p>
+ * $!{table.comment} 前端控制器
+ * </p>
+ *
+ * @author ${author}
+ * @version 1.0
+ * @date ${date}
+ * @describtion
+ * @since 1.0
+ */
+@Slf4j
+#if(${restControllerStyle})
+@RestController
+#else
+@Controller
+#end
+#set($str=$!table.serviceName)
+#set($servicename=$!str.substring(0,1).toLowerCase()+$!str.substring(1))
+#set($entityname=$!entity.substring(0,1).toLowerCase()+$!entity.substring(1))
+#if("$entityname"=="log")
+    #set($entityname="logger")
+#end
+#if("$entityname"=="page")
+    #set($entityname="pages")
+#end
+@RequestMapping("#if(${controllerMappingHyphenStyle})${controllerMappingHyphen}#else${table.entityPath}#end")
+@Api(value = "$!{entity} 控制器", tags = "$!{table.comment}")
+#if(${kotlin})
+class ${table.controllerName}#if(${superControllerClass}) : ${superControllerClass}()#end
+
+#else
+#if(${superControllerClass})
+public class ${table.controllerName} extends ${superControllerClass} {
+#else
+public class ${table.controllerName} {
+#end
+
+    @Autowired
+    private $!{table.serviceName} $!servicename;
+
+
+    /**
+     * 添加
+     *
+     * @param $!{entityname} $!{entity}
+     * @return R
+     */
+#if($entity!='Log')
+    @MartinLog("添加$!{table.comment}")
+#end
+    @PostMapping
+    public R save(@Valid @RequestBody $!{entity} $!{entityname}) {
+        return R.ok($!{servicename}.save($!{entityname}));
+    }
+
+    /**
+     * 删除
+     *
+     * @param $!{entityname} $!{entity}
+     * @return R
+     */
+    @MartinLog("删除$!{table.comment}")
+    @DeleteMapping
+    public R removeById(@Valid @RequestBody $!{entity} $!{entityname}) {
+        return R.ok($!{servicename}.removeById($!{entityname}.getId()));
+    }
+
+    /**
+     * 编辑
+     *
+     * @param $!{entityname} $!{entity}
+     * @return R
+     */
+    @MartinLog("编辑$!{table.comment}")
+    @PutMapping
+    public R edit(@Valid @RequestBody $!{entity} $!{entityname}) {
+        return R.ok($!{servicename}.updateById($!{entityname}));
+    }
+
+    /**
+     * 通过ID查询
+     *
+     * @param $!{entityname} $!{entity}
+     * @return R
+     */
+    @MartinLog("单个查询$!{table.comment}")
+    @GetMapping
+    public R getById($!{entity} $!{entityname}) {
+        return R.ok($!{servicename}.getById($!{entityname}.getId()));
+    }
+
+    /**
+     * 分页查询
+     *
+     * @param params 分页以及查询参数
+     * @return R
+     */
+    @SneakyThrows
+    @MartinLog("分页查询$!{table.comment}")
+    @GetMapping("/page")
+    public R<IPage> getPage(@RequestParam(required = false) Map params) {
+        return R.ok($!{servicename}.getPage(params));
+    }
+
+    @MartinLog("批量删除$!{table.comment}")
+    @DeleteMapping("/batch")
+    public R removeBatch(@RequestBody String ids) {
+        List<String> idList = Arrays.stream(ids.split(",")).collect(Collectors.toList());
+        if (CollUtil.isEmpty(idList)) {
+            return R.failed("ids 不能为空");
+        }
+        return R.ok($!{servicename}.removeByIds(idList));
+    }
+
+
+}
+
+#end

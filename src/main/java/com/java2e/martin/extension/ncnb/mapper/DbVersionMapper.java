@@ -4,6 +4,7 @@ import com.java2e.martin.extension.ncnb.entity.DbVersion;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -29,12 +30,21 @@ public interface DbVersionMapper extends BaseMapper<DbVersion> {
      * @param projectId
      * @return
      */
-    String dbversion(Object projectId);
+    String dbversion(Map map);
 
     /**
      * 重建当前项目的基线
+     *
      * @param projectId
      * @return
      */
-    Integer rebaseline(Object projectId);
+    Integer rebaseline(Map map);
+
+    /**
+     * 根据projectId,dbKey查询已同步的版本
+     *
+     * @param map
+     * @return
+     */
+    List<String> checkdbversion(Map map);
 }

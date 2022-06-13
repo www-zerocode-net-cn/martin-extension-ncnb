@@ -38,7 +38,7 @@ public class PingDBCommand extends AbstractDBCommand<R> {
             conn = DriverManager.getConnection(this.url, this.username, this.password);
             return R.ok("连接成功");
         } catch (SQLException var9) {
-            log.warn("", var9);
+            log.error("连接失败!出错消息", var9);
             return R.failed("连接失败!出错消息：" + var9.getMessage());
         } finally {
             JdbcKit.close(conn);

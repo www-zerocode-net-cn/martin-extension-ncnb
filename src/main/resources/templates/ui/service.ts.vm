@@ -1,0 +1,47 @@
+import request from '@/utils/request';
+
+import {TableListParams} from '@/components/Page/TablePage';
+import {$!{entity}ListItem} from '@/pages/${cfg.moduleName}/${table.entityPath}/model';
+
+export async function page$!{entity}s(params: TableListParams) {
+  return request('/syst/${table.entityPath}/page', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
+export async function delete$!{entity}(params: $!{entity}ListItem) {
+  return request('/syst/${table.entityPath}/delete', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
+export async function deleteBatch$!{entity}s(params: any) {
+  return request('/syst/${table.entityPath}/deleteBatch', {
+    method: 'POST',
+    data: params,
+  });
+}
+
+export async function add$!{entity}(params: $!{entity}ListItem) {
+  return request('/syst/${table.entityPath}/add', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
+export async function edit$!{entity}(params: $!{entity}ListItem) {
+  return request('/syst/${table.entityPath}/update', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}

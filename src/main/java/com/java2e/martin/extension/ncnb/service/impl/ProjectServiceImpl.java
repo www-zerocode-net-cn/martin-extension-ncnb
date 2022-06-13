@@ -1,7 +1,9 @@
 package com.java2e.martin.extension.ncnb.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.java2e.martin.common.bean.system.Code;
 import com.java2e.martin.common.core.api.R;
+import com.java2e.martin.common.data.mybatis.service.impl.MartinServiceImpl;
 import com.java2e.martin.extension.ncnb.entity.Project;
 import com.java2e.martin.extension.ncnb.mapper.ProjectMapper;
 import com.java2e.martin.extension.ncnb.service.ProjectService;
@@ -20,7 +22,7 @@ import java.util.Map;
  * @since 2020-10-26
  */
 @Service
-public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> implements ProjectService {
+public class ProjectServiceImpl extends MartinServiceImpl<ProjectMapper, Project> implements ProjectService {
 
     @Override
     public R projectService(String projectId) {
@@ -35,5 +37,10 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
             return R.failed(e.getMessage());
         }
         return R.ok(map);
+    }
+
+    @Override
+    protected void setEntity() {
+        this.clz = Project.class;
     }
 }

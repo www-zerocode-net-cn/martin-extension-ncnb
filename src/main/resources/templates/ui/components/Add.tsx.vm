@@ -1,0 +1,49 @@
+import {Button, message} from 'antd';
+import ProForm, {DrawerForm, ProFormText,} from '@ant-design/pro-form';
+#parse('/templates/ui/components/Import.tsx.vm')
+import {PlusOutlined} from '@ant-design/icons';
+import {FormattedMessage} from "@@/plugin-locale/localeExports";
+import {add} from "@/services/crud";
+
+import {useIntl} from 'umi';
+import React from "react";
+import {$!{entity}Item} from "@/pages/${cfg.moduleName}/${table.entityPath}";
+
+export type AddProps = {
+  refresh: () => void;
+};
+
+const Add: React.FC<AddProps> = (props) => {
+  const intl = useIntl();
+  return (
+    <>
+      <DrawerForm
+        title={<FormattedMessage id="app.${table.entityPath}.add-new-${table.entityPath}"/>}
+        width={'30%'}
+        trigger={
+          <Button type="primary">
+            <PlusOutlined/>
+            <FormattedMessage id="component.common.text.add"/>
+          </Button>
+        }
+        onFinish={async (values: $!{entity}Item) => {
+          const result = await add('/$!{cfg.moduleCode}/${table.entityPath}', values);
+          if (result.code === 200) {
+            message.success(
+              intl.formatMessage({
+                id: 'component.common.text.add-success',
+              })
+            );
+            props.refresh();
+          } else {
+            message.error(result.msg);
+          }
+        }}
+        initialValues={{}}
+      >
+#parse('/templates/ui/components/Column.tsx.vm')
+      </DrawerForm>
+    </>
+  );
+};
+export default Add;

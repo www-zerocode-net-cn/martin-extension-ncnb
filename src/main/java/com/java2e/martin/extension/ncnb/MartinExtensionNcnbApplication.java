@@ -3,6 +3,7 @@ package com.java2e.martin.extension.ncnb;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * @author 狮少
@@ -11,10 +12,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @describtion NcnbApplication
  * @since 1.0
  */
+@EnableScheduling
 @SpringBootApplication
 @MapperScan("com.java2e.martin.extension.ncnb.mapper")
-public class NcnbApplication {
+public class MartinExtensionNcnbApplication {
     public static void main(String[] args) {
-        SpringApplication.run(NcnbApplication.class, args);
+        SpringApplication.run(MartinExtensionNcnbApplication.class, args);
     }
 }

@@ -1,0 +1,11 @@
+FROM erdonline/jdk8-yum:latest
+
+MAINTAINER martin114@foxmail.com
+
+COPY --from=golang:1.15.3-alpine /usr/local/go /usr/local/go
+
+COPY --from=golang:1.15.3-alpine /lib/ld-musl-aarch64.so.1 /lib/ld-musl-aarch64.so.1
+
+ENV PATH=$PATH:/usr/local/go/bin
+
+RUN go version
