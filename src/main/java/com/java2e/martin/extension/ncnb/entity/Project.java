@@ -62,6 +62,16 @@ public class Project implements Serializable {
     private String description;
 
     /**
+     * 项目类型
+     */
+    private String type;
+
+    /**
+     * 项目标签
+     */
+    private String tags;
+
+    /**
      * 乐观锁
      */
     private Integer revision;

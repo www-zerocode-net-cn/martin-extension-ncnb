@@ -1,5 +1,6 @@
 package com.java2e.martin.extension.ncnb.controller;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -73,9 +74,8 @@ public class ProjectController {
         wrapper.eq("project_name", projectName);
         Project selectOne = projectService.getOne(wrapper);
         Project project = new Project();
+        BeanUtil.copyProperties(map,project);
 
-        project.setProjectName(projectName.toString());
-        project.setDescription(description.toString());
         project.setConfigJSON(JsonUtil.generate(map.get("configJSON")).getBytes());
         project.setProjectJSON(JsonUtil.generate(map.get("projectJSON")).getBytes());
 
@@ -104,6 +104,7 @@ public class ProjectController {
         wrapper.eq("id", id);
         Project selectOne = projectService.getOne(wrapper);
         Project project = new Project();
+        BeanUtil.copyProperties(map,project);
 
         project.setConfigJSON(JsonUtil.generate(map.get("configJSON")).getBytes());
         project.setProjectJSON(JsonUtil.generate(map.get("projectJSON")).getBytes());
@@ -170,7 +171,11 @@ public class ProjectController {
         MartinUser accessUser = SecurityContextUtil.getAccessUser();
         String userId = accessUser.getId();
         log.info("userId:{}", userId);
+        String  projectName = (String) params.get("projectName");
         lambdaQueryWrapper.eq(Project::getCreator, userId);
+        if (StrUtil.isNotBlank(projectName)){
+            lambdaQueryWrapper.like(Project::getProjectName, projectName);
+        }
         return R.ok(projectService.page(new Query<>(params), lambdaQueryWrapper));
     }
 
