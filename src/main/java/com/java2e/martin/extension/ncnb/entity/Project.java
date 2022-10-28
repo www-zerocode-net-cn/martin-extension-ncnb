@@ -11,10 +11,12 @@ import java.io.Serializable;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.java2e.martin.common.bean.system.User;
 import com.java2e.martin.common.core.annotation.BindField;
 import com.java2e.martin.common.core.constant.CommonConstants;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -75,6 +77,10 @@ public class Project implements Serializable {
      * 乐观锁
      */
     private Integer revision;
+
+    @ApiModelProperty(value = "删除标识（0-正常,1-删除）")
+    @TableLogic
+    private String delFlag;
 
     /**
      * 创建人

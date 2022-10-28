@@ -30,4 +30,12 @@ public class Query<T> extends Page<T> {
         }
 
     }
+
+    public Query(Integer page, Integer limit, List<OrderItem> orders) {
+        super(page == null ? 1 : page, limit == null ? 10 : limit);
+        if (CollectionUtil.isNotEmpty(orders)) {
+            addOrder(orders);
+        }
+
+    }
 }
