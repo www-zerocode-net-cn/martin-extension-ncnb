@@ -6,6 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.java2e.martin.common.api.dto.ProjectUserDto;
 import com.java2e.martin.common.api.dto.RoleUserDto;
+import com.java2e.martin.common.api.dto.UserDto;
 import com.java2e.martin.common.api.system.RemoteSystemRole;
 import com.java2e.martin.common.api.system.RemoteSystemUser;
 import com.java2e.martin.common.bean.system.Role;
@@ -174,6 +175,17 @@ public class ProjectServiceImpl extends MartinServiceImpl<ProjectMapper, Project
             return R.ok(result.getData());
         } else {
             return R.failed("删除角色下的用户失败");
+        }
+    }
+
+    @Override
+    public R userRegister(UserDto userDto) {
+        log.info("userDto: {}", userDto);
+        R result = remoteSystemUser.userRegister(userDto);
+        if (result.valid()) {
+            return R.ok(result.getData());
+        } else {
+            return R.failed("注册用户失败");
         }
     }
 

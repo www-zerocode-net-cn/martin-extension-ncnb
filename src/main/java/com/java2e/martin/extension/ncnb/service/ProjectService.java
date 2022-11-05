@@ -2,6 +2,7 @@ package com.java2e.martin.extension.ncnb.service;
 
 import com.java2e.martin.common.api.dto.ProjectUserDto;
 import com.java2e.martin.common.api.dto.RoleUserDto;
+import com.java2e.martin.common.api.dto.UserDto;
 import com.java2e.martin.common.data.mybatis.service.MartinService;
 import com.java2e.martin.extension.ncnb.entity.Project;
 import com.java2e.martin.common.core.api.R;
@@ -45,9 +46,9 @@ public interface ProjectService extends MartinService<Project> {
     R roles(String id);
 
 
-
     /**
      * 分页获取项目某个角色下的用户
+     *
      * @param projectUserDto
      * @return
      */
@@ -55,6 +56,7 @@ public interface ProjectService extends MartinService<Project> {
 
     /**
      * 分页获取系统中的的用户
+     *
      * @param projectUserDto
      * @return
      */
@@ -62,6 +64,7 @@ public interface ProjectService extends MartinService<Project> {
 
     /**
      * 保存角色用户
+     *
      * @param roleUserDto
      * @return
      */
@@ -69,8 +72,17 @@ public interface ProjectService extends MartinService<Project> {
 
     /**
      * 删除角色用户
+     *
      * @param roleUserDto
      * @return
      */
     R delRoleUsers(RoleUserDto roleUserDto);
+
+    /**
+     * 注册新用户
+     *
+     * @param userDto
+     * @return
+     */
+    R userRegister(UserDto userDto);
 }

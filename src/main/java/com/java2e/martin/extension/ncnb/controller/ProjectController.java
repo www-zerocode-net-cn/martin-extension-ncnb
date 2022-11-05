@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.java2e.martin.common.api.dto.ProjectUserDto;
 import com.java2e.martin.common.api.dto.RoleUserDto;
+import com.java2e.martin.common.api.dto.UserDto;
 import com.java2e.martin.common.core.api.R;
 import com.java2e.martin.common.core.constant.OssConstants;
 import com.java2e.martin.common.oss.service.OssTemplate;
@@ -220,6 +221,17 @@ public class ProjectController {
     @GetMapping("/users")
     public R users(@Validated ProjectUserDto projectUserDto) {
         return projectService.users(projectUserDto);
+    }
+
+    /**
+     * 获取系统中的用户
+     *
+     * @param id String
+     * @return Project
+     */
+    @PostMapping("/user/register")
+    public R users(@Validated @RequestBody UserDto userDto) {
+        return projectService.userRegister(userDto);
     }
 
 }
