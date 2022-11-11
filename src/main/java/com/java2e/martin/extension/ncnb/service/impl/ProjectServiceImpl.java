@@ -1,10 +1,10 @@
 package com.java2e.martin.extension.ncnb.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.java2e.martin.common.api.dto.ProjectUserDto;
 import com.java2e.martin.common.api.dto.RoleUserDto;
@@ -17,6 +17,7 @@ import com.java2e.martin.common.core.constant.ProjectConstants;
 import com.java2e.martin.common.data.mybatis.service.impl.MartinServiceImpl;
 import com.java2e.martin.common.security.userdetail.MartinUser;
 import com.java2e.martin.common.security.util.SecurityContextUtil;
+import com.java2e.martin.extension.ncnb.dto.ProjectBaseDto;
 import com.java2e.martin.extension.ncnb.dto.ProjectDto;
 import com.java2e.martin.extension.ncnb.entity.Project;
 import com.java2e.martin.extension.ncnb.entity.ProjectRole;
@@ -85,6 +86,7 @@ public class ProjectServiceImpl extends MartinServiceImpl<ProjectMapper, Project
         Project project = new Project();
         project.setType(ProjectConstants.PERSON_PROJECT_FLAG);
         saveProject(projectDto, project);
+        this.bindProjectUser(project.getId());
         return R.ok("新建个人项目成功");
     }
 
@@ -127,9 +129,10 @@ public class ProjectServiceImpl extends MartinServiceImpl<ProjectMapper, Project
         log.info("roleUserDto: {}", roleUserDto);
         R result = remoteSystemRole.saveRoleUsers(roleUserDto);
         if (result.valid()) {
+            this.batchBindProjectUser(roleUserDto.getUserIds(), roleUserDto.getProjectId());
             return R.ok(result.getData());
         } else {
-            return R.failed("获取用户失败");
+            return R.failed("保存用户失败");
         }
     }
 
@@ -138,6 +141,7 @@ public class ProjectServiceImpl extends MartinServiceImpl<ProjectMapper, Project
         log.info("roleUserDto: {}", roleUserDto);
         R result = remoteSystemRole.delRoleUsers(roleUserDto);
         if (result.valid()) {
+            this.baseMapper.removeUserFromGroup(roleUserDto);
             return R.ok(result.getData());
         } else {
             return R.failed("删除角色下的用户失败");
@@ -184,28 +188,61 @@ public class ProjectServiceImpl extends MartinServiceImpl<ProjectMapper, Project
         saveProject(projectDto, project);
         //初始化团队项目角色
         log.info("初始化项目角色");
+        String projectId = project.getId();
         List<Role> roles = Arrays.stream(ProjectConstants.ROLE_NAME).map(f -> {
             Role role = new Role();
             role.setRoleName(StrUtil.split(f, ":")[0]);
-            role.setRoleCode(ProjectConstants.buildRoleCode(StrUtil.split(f, ":")[1], project.getId()));
+            role.setRoleCode(ProjectConstants.buildRoleCode(StrUtil.split(f, ":")[1], projectId));
             return role;
         }).collect(Collectors.toList());
         R<List<Role>> register = remoteSystemRole.register(roles);
         if (register.valid()) {
             List<ProjectRole> projectRoles = register.getData().stream().map(f -> {
                 ProjectRole projectRole = new ProjectRole();
-                projectRole.setProjectId(project.getId());
+                projectRole.setProjectId(projectId);
                 projectRole.setRoleId(f.getId());
                 projectRole.setRoleName(f.getRoleName());
                 projectRole.setRoleCode(f.getRoleCode());
                 return projectRole;
             }).collect(Collectors.toList());
             projectRoleService.saveBatch(projectRoles);
+            this.bindProjectUser(projectId);
         } else {
             return R.failed("新建团队项目失败");
         }
         return R.ok("新建团队项目成功");
 
+    }
+
+    /**
+     * 绑定项目与用户的关系，方便查询
+     *
+     * @param userId
+     * @param projectId
+     */
+    private void bindProjectUser(String userId, String projectId) {
+        this.baseMapper.bindProjectUser(userId, projectId);
+    }
+
+    /**
+     * 批量绑定项目与用户的关系，方便查询
+     *
+     * @param userIds
+     * @param projectId
+     */
+    private void batchBindProjectUser(List<String> userIds, String projectId) {
+        this.baseMapper.batchBindProjectUser(userIds, projectId);
+    }
+
+
+    /**
+     * 绑定项目与用户的关系，方便查询
+     *
+     * @param projectId
+     */
+    private void bindProjectUser(String projectId) {
+        String userId = SecurityContextUtil.getAccessUser().getId();
+        this.baseMapper.bindProjectUser(userId, projectId);
     }
 
     /**
@@ -254,16 +291,31 @@ public class ProjectServiceImpl extends MartinServiceImpl<ProjectMapper, Project
 
     @Override
     public R groupProjectPage(Map params) {
-        LambdaQueryWrapper<Project> lambdaQueryWrapper = prepareProjectLambdaQueryWrapper(params);
-        lambdaQueryWrapper.eq(Project::getType, ProjectConstants.GROUP_PROJECT_FLAG);
-        return R.ok(this.page(new Query<>(params), lambdaQueryWrapper));
+        MartinUser accessUser = SecurityContextUtil.getAccessUser();
+        String userId = accessUser.getId();
+        params.put("type", ProjectConstants.GROUP_PROJECT_FLAG);
+        params.put("userId", userId);
+        Page<ProjectBaseDto> result = this.baseMapper.projectPage(new Query<>(params), params);
+        return R.ok(result);
     }
 
     @Override
     public R personProjectPage(Map params) {
-        LambdaQueryWrapper<Project> lambdaQueryWrapper = prepareProjectLambdaQueryWrapper(params);
-        lambdaQueryWrapper.eq(Project::getType, ProjectConstants.PERSON_PROJECT_FLAG);
-        return R.ok(this.page(new Query<>(params), lambdaQueryWrapper));
+        MartinUser accessUser = SecurityContextUtil.getAccessUser();
+        String userId = accessUser.getId();
+        params.put("type", ProjectConstants.PERSON_PROJECT_FLAG);
+        params.put("userId", userId);
+        Page<ProjectBaseDto> result = this.baseMapper.projectPage(new Query<>(params), params);
+        return R.ok(result);
+    }
+
+    @Override
+    public R recentProjectPage(Map params) {
+        MartinUser accessUser = SecurityContextUtil.getAccessUser();
+        String userId = accessUser.getId();
+        params.put("userId", userId);
+        Page<ProjectBaseDto> result = this.baseMapper.projectPage(new Query<>(params), params);
+        return R.ok(result);
     }
 
     /**

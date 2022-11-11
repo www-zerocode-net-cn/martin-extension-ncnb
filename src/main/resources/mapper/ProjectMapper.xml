@@ -2,4 +2,42 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.java2e.martin.extension.ncnb.mapper.ProjectMapper">
 
+    <insert id="bindProjectUser">
+        INSERT INTO project_user (id, project_id, user_id)
+        VALUES (UUID_SHORT(), #{projectId}, #{userId});    </insert>
+    <insert id="batchBindProjectUser">
+        insert into project_user (id, project_id, user_id) values
+        <foreach collection="userIds" item="item" index="index" separator=",">
+            (
+            UUID_SHORT(),
+            #{projectId},
+            #{item}
+            )
+        </foreach>
+    </insert>
+    <delete id="removeUserFromGroup" parameterType="com.java2e.martin.common.api.dto.RoleUserDto">
+        delete
+        from project_user pu
+        where
+        project_id = #{projectId}
+        and user_id in
+        <foreach collection="userIds" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </delete>
+    <select id="projectPage" resultType="com.java2e.martin.extension.ncnb.dto.ProjectBaseDto">
+        SELECT p.* from project p
+        left JOIN project_user pu on pu.project_id=p.id
+        <where>
+            p.del_flag=0 and pu.user_id=#{param.userId}
+            <if test="param.projectName!=null and param.projectName!=''">
+                and p.projectName like CONCAT('%',#{param.projectName},'%')
+            </if>
+            <if test="param.type!=null and param.type!=''">
+                and p.type =#{param.type}
+            </if>
+        </where>
+        GROUP BY p.id
+        order by p.create_time desc
+    </select>
 </mapper>

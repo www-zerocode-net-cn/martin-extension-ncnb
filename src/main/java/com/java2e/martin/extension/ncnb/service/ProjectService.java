@@ -136,4 +136,12 @@ public interface ProjectService extends MartinService<Project> {
      * @return
      */
     R personProjectPage(Map params);
+
+    /**
+     * 最近项目
+     *
+     * @param params
+     * @return
+     */
+    R recentProjectPage(Map params);
 }

@@ -114,6 +114,17 @@ public class ProjectController {
         return projectService.personProjectPage(params);
     }
 
+    /**
+     * 分页查询
+     *
+     * @param params 分页以及查询参数
+     * @return Page
+     */
+    @GetMapping("/recent")
+    public R recent(@RequestParam Map params) {
+        return projectService.recentProjectPage(params);
+    }
+
     @PostMapping("upload")
     public R uploadTest(@RequestParam("file") MultipartFile file) {
         return R.ok(ossTemplate.upload(OssConstants.DEFAULT_BUCKET, file, true));
