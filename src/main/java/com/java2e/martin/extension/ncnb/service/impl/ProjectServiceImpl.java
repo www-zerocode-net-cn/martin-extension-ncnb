@@ -190,6 +190,21 @@ public class ProjectServiceImpl extends MartinServiceImpl<ProjectMapper, Project
     }
 
     @Override
+    public R rolePermission(String roleId) {
+        if (StrUtil.isBlank(roleId)) {
+            return R.failed("roleId为空");
+        }
+        log.info("roleId: {}", roleId);
+        R result = remoteSystemRole.rolePermission(roleId);
+        log.info("result: {}", result);
+        if (result.valid()) {
+            return R.ok(result.getData());
+        } else {
+            return R.failed("获取角色权限失败");
+        }
+    }
+
+    @Override
     protected void setEntity() {
         this.clz = Project.class;
     }

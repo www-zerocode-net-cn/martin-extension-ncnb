@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -126,8 +127,8 @@ public class ProjectController {
      * @return Project
      */
     @GetMapping("/get/{id}")
-    public Project getById(@PathVariable String id) {
-        return projectService.getById(id);
+    public R getById(@PathVariable String id) {
+        return R.ok(projectService.getById(id));
     }
 
     /**
@@ -213,6 +214,18 @@ public class ProjectController {
 
 
     /**
+     * 获取角色权限
+     *
+     * @param id String
+     * @return Project
+     */
+    @GetMapping("/role/permission")
+    public R rolePermission(@RequestParam("roleId") String roleId) {
+        return projectService.rolePermission(roleId);
+    }
+
+
+    /**
      * 获取系统中的用户
      *
      * @param id String
@@ -233,6 +246,7 @@ public class ProjectController {
     public R users(@Validated @RequestBody UserDto userDto) {
         return projectService.userRegister(userDto);
     }
+
 
 }
 

@@ -85,4 +85,11 @@ public interface ProjectService extends MartinService<Project> {
      * @return
      */
     R userRegister(UserDto userDto);
+
+    /**
+     * 获取角色权限
+     * @param roleId
+     * @return
+     */
+    R rolePermission(String roleId);
 }
