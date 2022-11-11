@@ -4,6 +4,8 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.java2e.martin.common.api.dto.ProjectUserDto;
 import com.java2e.martin.common.api.dto.RoleUserDto;
 import com.java2e.martin.common.api.dto.UserDto;
@@ -13,12 +15,16 @@ import com.java2e.martin.common.bean.system.Role;
 import com.java2e.martin.common.core.api.R;
 import com.java2e.martin.common.core.constant.ProjectConstants;
 import com.java2e.martin.common.data.mybatis.service.impl.MartinServiceImpl;
+import com.java2e.martin.common.security.userdetail.MartinUser;
+import com.java2e.martin.common.security.util.SecurityContextUtil;
+import com.java2e.martin.extension.ncnb.dto.ProjectDto;
 import com.java2e.martin.extension.ncnb.entity.Project;
 import com.java2e.martin.extension.ncnb.entity.ProjectRole;
 import com.java2e.martin.extension.ncnb.mapper.ProjectMapper;
 import com.java2e.martin.extension.ncnb.service.ProjectRoleService;
 import com.java2e.martin.extension.ncnb.service.ProjectService;
 import com.java2e.martin.extension.ncnb.util.JsonUtil;
+import com.java2e.martin.extension.ncnb.util.Query;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,56 +76,16 @@ public class ProjectServiceImpl extends MartinServiceImpl<ProjectMapper, Project
 
     @SneakyThrows
     @Override
-    public R initProject(Map map) {
-        log.info("map: {}", map);
-        LambdaQueryWrapper<Project> wrapper = new LambdaQueryWrapper<>();
-        Object projectName = map.get("projectName");
-        Object description = map.get("description");
-        if (projectName == null) {
-            return R.failed("项目名为空");
+    public R initPersonProject(ProjectDto projectDto) {
+        log.info("projectDto: {}", projectDto);
+        R check = check(projectDto);
+        if (check.invalid()) {
+            return check;
         }
-        if (description == null) {
-            return R.failed("项目描述为空");
-        }
-        wrapper.eq(Project::getProjectName, projectName);
-        Project selectOne = this.getOne(wrapper);
-
-        if (selectOne != null) {
-            return R.failed("项目「" + projectName + "」已存在");
-        } else {
-            Project project = new Project();
-            BeanUtil.copyProperties(map, project);
-
-            project.setConfigJSON(JsonUtil.generate(map.get("configJSON")).getBytes());
-            project.setProjectJSON(JsonUtil.generate(map.get("projectJSON")).getBytes());
-            boolean save = this.save(project);
-            Object type = map.get("type");
-            //初始化项目角色
-            if (ObjectUtil.isNotNull(type) && ObjectUtil.equal(type, 2)) {
-                log.info("初始化项目角色");
-                List<Role> roles = Arrays.stream(ProjectConstants.ROLE_NAME).map(f -> {
-                    Role role = new Role();
-                    role.setRoleName(StrUtil.split(f, ":")[0]);
-                    role.setRoleCode(ProjectConstants.buildRoleCode(StrUtil.split(f, ":")[1], project.getId()));
-                    return role;
-                }).collect(Collectors.toList());
-                R<List<Role>> register = remoteSystemRole.register(roles);
-                if (register.valid()) {
-                    List<ProjectRole> projectRoles = register.getData().stream().map(f -> {
-                        ProjectRole projectRole = new ProjectRole();
-                        projectRole.setProjectId(project.getId());
-                        projectRole.setRoleId(f.getId());
-                        projectRole.setRoleName(f.getRoleName());
-                        projectRole.setRoleCode(f.getRoleCode());
-                        return projectRole;
-                    }).collect(Collectors.toList());
-                    projectRoleService.saveBatch(projectRoles);
-                } else {
-                    return R.failed("新建团队项目失败");
-                }
-            }
-            return R.ok(save);
-        }
+        Project project = new Project();
+        project.setType(ProjectConstants.PERSON_PROJECT_FLAG);
+        saveProject(projectDto, project);
+        return R.ok("新建个人项目成功");
     }
 
     @Override
@@ -202,6 +168,149 @@ public class ProjectServiceImpl extends MartinServiceImpl<ProjectMapper, Project
         } else {
             return R.failed("获取角色权限失败");
         }
+    }
+
+    @SneakyThrows
+    @Override
+    public R initGroupProject(ProjectDto projectDto) {
+        log.info("projectDto: {}", projectDto);
+        R check = check(projectDto);
+        if (check.invalid()) {
+            return check;
+        }
+        Project project = new Project();
+        project.setType(ProjectConstants.GROUP_PROJECT_FLAG);
+        //保存项目
+        saveProject(projectDto, project);
+        //初始化团队项目角色
+        log.info("初始化项目角色");
+        List<Role> roles = Arrays.stream(ProjectConstants.ROLE_NAME).map(f -> {
+            Role role = new Role();
+            role.setRoleName(StrUtil.split(f, ":")[0]);
+            role.setRoleCode(ProjectConstants.buildRoleCode(StrUtil.split(f, ":")[1], project.getId()));
+            return role;
+        }).collect(Collectors.toList());
+        R<List<Role>> register = remoteSystemRole.register(roles);
+        if (register.valid()) {
+            List<ProjectRole> projectRoles = register.getData().stream().map(f -> {
+                ProjectRole projectRole = new ProjectRole();
+                projectRole.setProjectId(project.getId());
+                projectRole.setRoleId(f.getId());
+                projectRole.setRoleName(f.getRoleName());
+                projectRole.setRoleCode(f.getRoleCode());
+                return projectRole;
+            }).collect(Collectors.toList());
+            projectRoleService.saveBatch(projectRoles);
+        } else {
+            return R.failed("新建团队项目失败");
+        }
+        return R.ok("新建团队项目成功");
+
+    }
+
+    /**
+     * 保存项目
+     *
+     * @param projectDto
+     * @param project
+     * @return
+     * @throws JsonProcessingException
+     */
+    private boolean saveProject(ProjectDto projectDto, Project project) throws JsonProcessingException {
+        configProject(projectDto, project);
+        return this.save(project);
+    }
+
+    /**
+     * 配置Project属性
+     *
+     * @param projectDto
+     * @param project
+     * @throws JsonProcessingException
+     */
+    public void configProject(ProjectDto projectDto, Project project) throws JsonProcessingException {
+        BeanUtil.copyProperties(projectDto, project);
+
+        project.setConfigJSON(JsonUtil.generate(projectDto.getConfigJSON()).getBytes());
+        project.setProjectJSON(JsonUtil.generate(projectDto.getProjectJSON()).getBytes());
+    }
+
+    @SneakyThrows
+    @Override
+    public R saveProject(ProjectDto projectDto) {
+        log.info("projectDto: {}", projectDto);
+        QueryWrapper<Project> wrapper = new QueryWrapper<>();
+        String id = projectDto.getId();
+        if (StrUtil.isBlank(id)) {
+            return R.failed("id为空");
+        }
+        wrapper.eq("id", id);
+        Project project = new Project();
+        this.configProject(projectDto, project);
+
+        boolean update = this.update(project, wrapper);
+        return R.ok(update);
+    }
+
+    @Override
+    public R groupProjectPage(Map params) {
+        LambdaQueryWrapper<Project> lambdaQueryWrapper = prepareProjectLambdaQueryWrapper(params);
+        lambdaQueryWrapper.eq(Project::getType, ProjectConstants.GROUP_PROJECT_FLAG);
+        return R.ok(this.page(new Query<>(params), lambdaQueryWrapper));
+    }
+
+    @Override
+    public R personProjectPage(Map params) {
+        LambdaQueryWrapper<Project> lambdaQueryWrapper = prepareProjectLambdaQueryWrapper(params);
+        lambdaQueryWrapper.eq(Project::getType, ProjectConstants.PERSON_PROJECT_FLAG);
+        return R.ok(this.page(new Query<>(params), lambdaQueryWrapper));
+    }
+
+    /**
+     * 组装查询需要的参数
+     *
+     * @param params
+     * @return
+     */
+    private LambdaQueryWrapper<Project> prepareProjectLambdaQueryWrapper(Map params) {
+        String order = params.get("order").toString();
+        LambdaQueryWrapper<Project> lambdaQueryWrapper = new LambdaQueryWrapper();
+        if (StrUtil.equals(order, "createTime")) {
+            lambdaQueryWrapper.orderByDesc(Project::getCreateTime);
+        } else if (StrUtil.equals(order, "updateTime")) {
+            lambdaQueryWrapper.orderByDesc(Project::getUpdateTime);
+        }
+
+        MartinUser accessUser = SecurityContextUtil.getAccessUser();
+        String userId = accessUser.getId();
+        log.info("userId:{}", userId);
+        String projectName = (String) params.get("projectName");
+        lambdaQueryWrapper.eq(Project::getCreator, userId);
+        if (StrUtil.isNotBlank(projectName)) {
+            lambdaQueryWrapper.like(Project::getProjectName, projectName);
+        }
+        lambdaQueryWrapper.select(Project::getId, Project::getProjectName, Project::getDescription, Project::getTags, Project::getType);
+        return lambdaQueryWrapper;
+    }
+
+
+    private R check(ProjectDto projectDto) {
+        LambdaQueryWrapper<Project> wrapper = new LambdaQueryWrapper<>();
+        Object projectName = projectDto.getProjectName();
+        Object description = projectDto.getDescription();
+        if (projectName == null) {
+            return R.failed("项目名为空");
+        }
+        if (description == null) {
+            return R.failed("项目描述为空");
+        }
+        wrapper.eq(Project::getProjectName, projectName);
+        Project selectOne = this.getOne(wrapper);
+
+        if (selectOne != null) {
+            return R.failed("项目「" + projectName + "」已存在");
+        }
+        return R.ok("");
     }
 
     @Override

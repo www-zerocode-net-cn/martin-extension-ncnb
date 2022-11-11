@@ -1,9 +1,11 @@
 package com.java2e.martin.extension.ncnb.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.java2e.martin.common.api.dto.ProjectUserDto;
 import com.java2e.martin.common.api.dto.RoleUserDto;
 import com.java2e.martin.common.api.dto.UserDto;
 import com.java2e.martin.common.data.mybatis.service.MartinService;
+import com.java2e.martin.extension.ncnb.dto.ProjectDto;
 import com.java2e.martin.extension.ncnb.entity.Project;
 import com.java2e.martin.common.core.api.R;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +37,7 @@ public interface ProjectService extends MartinService<Project> {
      * @param map
      * @return
      */
-    R initProject(Map map);
+    R initPersonProject(ProjectDto map);
 
     /**
      * 获取项目全部角色
@@ -88,8 +90,50 @@ public interface ProjectService extends MartinService<Project> {
 
     /**
      * 获取角色权限
+     *
      * @param roleId
      * @return
      */
     R rolePermission(String roleId);
+
+    /**
+     * 新增团队项目
+     *
+     * @param map
+     * @return
+     */
+    R initGroupProject(ProjectDto projectDto);
+
+    /**
+     * 设置Project属性
+     *
+     * @param projectDto
+     * @param project
+     * @throws JsonProcessingException
+     */
+    void configProject(ProjectDto projectDto, Project project) throws JsonProcessingException;
+
+    /**
+     * 保存团队项目
+     *
+     * @param projectDto
+     * @return
+     */
+    R saveProject(ProjectDto projectDto);
+
+    /**
+     * 查询团队列表分页
+     *
+     * @param params
+     * @return
+     */
+    R groupProjectPage(Map params);
+
+    /**
+     * 查询个人项目
+     *
+     * @param params
+     * @return
+     */
+    R personProjectPage(Map params);
 }
