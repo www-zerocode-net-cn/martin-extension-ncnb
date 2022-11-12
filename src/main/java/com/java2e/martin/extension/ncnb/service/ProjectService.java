@@ -92,9 +92,10 @@ public interface ProjectService extends MartinService<Project> {
      * 获取角色权限
      *
      * @param roleId
+     * @param projectId
      * @return
      */
-    R rolePermission(String roleId);
+    R rolePermission(String roleId, String projectId);
 
     /**
      * 新增团队项目
@@ -144,4 +145,12 @@ public interface ProjectService extends MartinService<Project> {
      * @return
      */
     R recentProjectPage(Map params);
+
+    /**
+     * 保存权限
+     *
+     * @param map
+     * @return
+     */
+    R saveCheckedOperations(Map map);
 }

@@ -3,15 +3,17 @@
 <mapper namespace="com.java2e.martin.extension.ncnb.mapper.ProjectMapper">
 
     <insert id="bindProjectUser">
-        INSERT INTO project_user (id, project_id, user_id)
-        VALUES (UUID_SHORT(), #{projectId}, #{userId});    </insert>
+        INSERT INTO project_user (id, project_id, user_id, role_id)
+        VALUES (UUID_SHORT(), #{projectId}, #{userId}, #{roleId});
+    </insert>
     <insert id="batchBindProjectUser">
-        insert into project_user (id, project_id, user_id) values
+        insert into project_user (id, project_id, user_id,role_id) values
         <foreach collection="userIds" item="item" index="index" separator=",">
             (
             UUID_SHORT(),
             #{projectId},
-            #{item}
+            #{item},
+            #{roleId}
             )
         </foreach>
     </insert>
@@ -19,7 +21,7 @@
         delete
         from project_user pu
         where
-        project_id = #{projectId}
+        project_id = #{projectId} and pu.role_id=#{roleId}
         and user_id in
         <foreach collection="userIds" item="item" index="index" open="(" close=")" separator=",">
             #{item}
@@ -39,5 +41,13 @@
         </where>
         GROUP BY p.id
         order by p.create_time desc
+    </select>
+    <select id="currentUserRole" resultType="java.lang.String">
+        SELECT pr.role_code
+        from project_role pr
+                 INNER JOIN project_user pu on pr.project_id = pu.project_id and pr.role_id=pu.role_id
+        where pu.user_id = #{userId}
+          and pu.project_id = #{projectId}
+        ORDER BY pr.role_code LIMIT 1
     </select>
 </mapper>

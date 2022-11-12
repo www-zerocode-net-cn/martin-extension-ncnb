@@ -182,8 +182,8 @@ public class GroupProjectController {
      * @return Project
      */
     @GetMapping("/role/permission")
-    public R rolePermission(@RequestParam("roleId") String roleId) {
-        return projectService.rolePermission(roleId);
+    public R rolePermission(@RequestParam("roleId") String roleId,@RequestParam("projectId") String projectId) {
+        return projectService.rolePermission(roleId,projectId);
     }
 
 
@@ -207,6 +207,17 @@ public class GroupProjectController {
     @PostMapping("/user/register")
     public R users(@Validated @RequestBody UserDto userDto) {
         return projectService.userRegister(userDto);
+    }
+
+    /**
+     * 用户注册
+     *
+     * @param userDto
+     * @return
+     */
+    @PostMapping("/saveCheckedOperations")
+    public R saveCheckedOperations(@RequestBody Map map) {
+        return projectService.saveCheckedOperations(map);
     }
 
 

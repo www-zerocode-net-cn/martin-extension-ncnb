@@ -31,6 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -86,7 +87,8 @@ public class ProjectServiceImpl extends MartinServiceImpl<ProjectMapper, Project
         Project project = new Project();
         project.setType(ProjectConstants.PERSON_PROJECT_FLAG);
         saveProject(projectDto, project);
-        this.bindProjectUser(project.getId());
+        //个人项目无需绑定角色，赋值为-1
+        this.bindProjectUser(project.getId(), "-1");
         return R.ok("新建个人项目成功");
     }
 
@@ -129,7 +131,7 @@ public class ProjectServiceImpl extends MartinServiceImpl<ProjectMapper, Project
         log.info("roleUserDto: {}", roleUserDto);
         R result = remoteSystemRole.saveRoleUsers(roleUserDto);
         if (result.valid()) {
-            this.batchBindProjectUser(roleUserDto.getUserIds(), roleUserDto.getProjectId());
+            this.batchBindProjectUser(roleUserDto.getUserIds(), roleUserDto.getProjectId(), roleUserDto.getRoleId());
             return R.ok(result.getData());
         } else {
             return R.failed("保存用户失败");
@@ -160,15 +162,28 @@ public class ProjectServiceImpl extends MartinServiceImpl<ProjectMapper, Project
     }
 
     @Override
-    public R rolePermission(String roleId) {
+    public R rolePermission(String roleId, String projectId) {
         if (StrUtil.isBlank(roleId)) {
-            return R.failed("roleId为空");
+            return R.failed("roleId 为空");
+        }
+        if (StrUtil.isBlank(projectId)) {
+            return R.failed("projectId 为空");
         }
         log.info("roleId: {}", roleId);
-        R result = remoteSystemRole.rolePermission(roleId);
-        log.info("result: {}", result);
-        if (result.valid()) {
-            return R.ok(result.getData());
+        R r = remoteSystemRole.rolePermission(roleId);
+        log.info("r: {}", r);
+        if (r.valid()) {
+            String userId = SecurityContextUtil.getAccessUser().getId();
+            String roleCode = this.baseMapper.currentUserRole(projectId, userId, roleId);
+            log.info("roleCode: {}", roleCode);
+            if (StrUtil.isBlank(roleCode)) {
+                return R.failed("获取角色权限失败");
+            }
+            HashMap<String, Object> result = new HashMap<>(2);
+            Integer loginRole = Integer.valueOf(roleCode.split("_")[1]);
+            result.put("loginRole", loginRole);
+            result.put("checkboxes", r.getData());
+            return R.ok(result);
         } else {
             return R.failed("获取角色权限失败");
         }
@@ -206,7 +221,10 @@ public class ProjectServiceImpl extends MartinServiceImpl<ProjectMapper, Project
                 return projectRole;
             }).collect(Collectors.toList());
             projectRoleService.saveBatch(projectRoles);
-            this.bindProjectUser(projectId);
+            ProjectRole adminRole = projectRoles.stream().filter(f -> f.getRoleCode().contains("_0")).findFirst().get();
+            log.info("adminRole: {}", adminRole);
+            //绑定项目、用户、角色
+            this.bindProjectUser(projectId, adminRole.getRoleId());
         } else {
             return R.failed("新建团队项目失败");
         }
@@ -214,24 +232,16 @@ public class ProjectServiceImpl extends MartinServiceImpl<ProjectMapper, Project
 
     }
 
-    /**
-     * 绑定项目与用户的关系，方便查询
-     *
-     * @param userId
-     * @param projectId
-     */
-    private void bindProjectUser(String userId, String projectId) {
-        this.baseMapper.bindProjectUser(userId, projectId);
-    }
 
     /**
      * 批量绑定项目与用户的关系，方便查询
      *
      * @param userIds
      * @param projectId
+     * @param roleId
      */
-    private void batchBindProjectUser(List<String> userIds, String projectId) {
-        this.baseMapper.batchBindProjectUser(userIds, projectId);
+    private void batchBindProjectUser(List<String> userIds, String projectId, @NotEmpty(message = "roleId 为空") String roleId) {
+        this.baseMapper.batchBindProjectUser(userIds, projectId, roleId);
     }
 
 
@@ -239,10 +249,11 @@ public class ProjectServiceImpl extends MartinServiceImpl<ProjectMapper, Project
      * 绑定项目与用户的关系，方便查询
      *
      * @param projectId
+     * @param roleId
      */
-    private void bindProjectUser(String projectId) {
+    private void bindProjectUser(String projectId, String roleId) {
         String userId = SecurityContextUtil.getAccessUser().getId();
-        this.baseMapper.bindProjectUser(userId, projectId);
+        this.baseMapper.bindProjectUser(userId, projectId,roleId);
     }
 
     /**
@@ -316,6 +327,17 @@ public class ProjectServiceImpl extends MartinServiceImpl<ProjectMapper, Project
         params.put("userId", userId);
         Page<ProjectBaseDto> result = this.baseMapper.projectPage(new Query<>(params), params);
         return R.ok(result);
+    }
+
+    @Override
+    public R saveCheckedOperations(Map map) {
+        log.info("map: {}", map);
+        R result = remoteSystemRole.saveCheckedOperations(map);
+        if (result.valid()) {
+            return R.ok("保存权限成功");
+        } else {
+            return R.failed("保存权限失败");
+        }
     }
 
     /**
