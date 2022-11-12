@@ -130,5 +130,16 @@ public class ProjectController {
         return R.ok(ossTemplate.upload(OssConstants.DEFAULT_BUCKET, file, true));
     }
 
+
+    /**
+     * 查询统计信息
+     *
+     * @param id String
+     * @return Project
+     */
+    @GetMapping("/statistic")
+    public R statistic() {
+        return projectService.statistic();
+    }
 }
 

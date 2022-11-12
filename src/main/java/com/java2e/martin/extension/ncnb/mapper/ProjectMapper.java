@@ -23,11 +23,12 @@ public interface ProjectMapper extends BaseMapper<Project> {
 
     /**
      * 绑定项目与用户关系
-     *  @param userId
+     *
+     * @param userId
      * @param projectId
      * @param roleId
      */
-    void bindProjectUser(@Param("userId") String userId, @Param("projectId") String projectId,@Param("roleId") String roleId);
+    void bindProjectUser(@Param("userId") String userId, @Param("projectId") String projectId, @Param("roleId") String roleId);
 
     /**
      * 批量绑定项目与用户关系
@@ -62,4 +63,33 @@ public interface ProjectMapper extends BaseMapper<Project> {
      * @return
      */
     String currentUserRole(@Param("projectId") String projectId, @Param("userId") String userId, @Param("roleId") String roleId);
+
+    /**
+     * 统计今天打开的项目
+     *
+     * @return
+     */
+    Integer queryToday();
+
+    /**
+     * 统计昨天打开的项目
+     *
+     * @return
+     */
+    Integer queryYesterday();
+
+    /**
+     * 统计本月打开的项目
+     *
+     * @return
+     */
+    Integer queryMonth();
+
+    /**
+     * 统计全部项目
+     *
+     * @return
+     */
+    Integer queryTotal();
+
 }

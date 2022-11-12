@@ -153,4 +153,12 @@ public interface ProjectService extends MartinService<Project> {
      * @return
      */
     R saveCheckedOperations(Map map);
+
+    /**
+     * 查询统计信息
+     *
+     * @return
+     */
+    R statistic();
+
 }

@@ -45,9 +45,26 @@
     <select id="currentUserRole" resultType="java.lang.String">
         SELECT pr.role_code
         from project_role pr
-                 INNER JOIN project_user pu on pr.project_id = pu.project_id and pr.role_id=pu.role_id
+                 INNER JOIN project_user pu on pr.project_id = pu.project_id and pr.role_id = pu.role_id
         where pu.user_id = #{userId}
           and pu.project_id = #{projectId}
         ORDER BY pr.role_code LIMIT 1
+    </select>
+    <select id="queryToday" resultType="java.lang.Integer">
+        select count(1)
+        from project
+        WHERE to_days(update_time) = to_days(now())
+    </select>
+    <select id="queryYesterday" resultType="java.lang.Integer">
+        select count(1) from project WHERE TO_DAYS(NOW( ) ) - TO_DAYS(create_time)&lt;=1
+    </select>
+    <select id="queryMonth" resultType="java.lang.Integer">
+        select count(1)
+        from project
+        WHERE DATE_FORMAT(create_time, '%Y%m') = DATE_FORMAT(CURDATE(), '%Y%m')
+    </select>
+    <select id="queryTotal" resultType="java.lang.Integer">
+        select count(1)
+        from project
     </select>
 </mapper>

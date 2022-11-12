@@ -253,7 +253,7 @@ public class ProjectServiceImpl extends MartinServiceImpl<ProjectMapper, Project
      */
     private void bindProjectUser(String projectId, String roleId) {
         String userId = SecurityContextUtil.getAccessUser().getId();
-        this.baseMapper.bindProjectUser(userId, projectId,roleId);
+        this.baseMapper.bindProjectUser(userId, projectId, roleId);
     }
 
     /**
@@ -338,6 +338,20 @@ public class ProjectServiceImpl extends MartinServiceImpl<ProjectMapper, Project
         } else {
             return R.failed("保存权限失败");
         }
+    }
+
+    @Override
+    public R statistic() {
+        HashMap<String, Object> result = new HashMap<>();
+        Integer today = this.baseMapper.queryToday();
+        Integer yesterday = this.baseMapper.queryYesterday();
+        Integer month = this.baseMapper.queryMonth();
+        Integer total = this.baseMapper.queryTotal();
+        result.put("today", today);
+        result.put("yesterday", yesterday);
+        result.put("month", month);
+        result.put("total", total);
+        return R.ok(result);
     }
 
     /**
