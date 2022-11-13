@@ -42,8 +42,8 @@
         GROUP BY p.id
         order by p.create_time desc
     </select>
-    <select id="currentUserRole" resultType="java.lang.String">
-        SELECT pr.role_code
+    <select id="currentUserRole" resultType="com.java2e.martin.extension.ncnb.entity.ProjectRole">
+        SELECT pr.*
         from project_role pr
                  INNER JOIN project_user pu on pr.project_id = pu.project_id and pr.role_id = pu.role_id
         where pu.user_id = #{userId}

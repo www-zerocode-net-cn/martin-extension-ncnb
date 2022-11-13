@@ -161,4 +161,11 @@ public interface ProjectService extends MartinService<Project> {
      */
     R statistic();
 
+    /**
+     * 获取当前用户在项目中的最大角色
+     *
+     * @param projectId
+     * @return
+     */
+    R currentRolePermission(String projectId);
 }

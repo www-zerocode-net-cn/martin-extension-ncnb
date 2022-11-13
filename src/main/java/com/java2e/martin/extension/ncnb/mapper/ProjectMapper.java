@@ -5,6 +5,7 @@ import com.java2e.martin.common.api.dto.RoleUserDto;
 import com.java2e.martin.extension.ncnb.dto.ProjectBaseDto;
 import com.java2e.martin.extension.ncnb.entity.Project;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.java2e.martin.extension.ncnb.entity.ProjectRole;
 import com.java2e.martin.extension.ncnb.util.Query;
 import org.apache.ibatis.annotations.Param;
 
@@ -62,7 +63,7 @@ public interface ProjectMapper extends BaseMapper<Project> {
      * @param userId
      * @return
      */
-    String currentUserRole(@Param("projectId") String projectId, @Param("userId") String userId, @Param("roleId") String roleId);
+    ProjectRole currentUserRole(@Param("projectId") String projectId, @Param("userId") String userId);
 
     /**
      * 统计今天打开的项目

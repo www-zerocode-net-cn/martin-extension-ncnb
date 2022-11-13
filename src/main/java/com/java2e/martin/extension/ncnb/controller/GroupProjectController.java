@@ -65,7 +65,7 @@ public class GroupProjectController {
     /**
      * 保存
      *
-     * @param  projectDto
+     * @param projectDto
      * @return R
      */
     @SneakyThrows
@@ -182,8 +182,8 @@ public class GroupProjectController {
      * @return Project
      */
     @GetMapping("/role/permission")
-    public R rolePermission(@RequestParam("roleId") String roleId,@RequestParam("projectId") String projectId) {
-        return projectService.rolePermission(roleId,projectId);
+    public R rolePermission(@RequestParam("roleId") String roleId, @RequestParam("projectId") String projectId) {
+        return projectService.rolePermission(roleId, projectId);
     }
 
 
@@ -218,6 +218,16 @@ public class GroupProjectController {
     @PostMapping("/saveCheckedOperations")
     public R saveCheckedOperations(@RequestBody Map map) {
         return projectService.saveCheckedOperations(map);
+    }
+
+    /**
+     * 获取当前用户在项目中的最大角色
+     *
+     * @return
+     */
+    @GetMapping("/currentRolePermission")
+    public R currentRolePermission(@RequestParam("projectId") String projectId) {
+        return projectService.currentRolePermission(projectId);
     }
 
 

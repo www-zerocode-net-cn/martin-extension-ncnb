@@ -1,6 +1,7 @@
 package com.java2e.martin.extension.ncnb.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -174,13 +175,13 @@ public class ProjectServiceImpl extends MartinServiceImpl<ProjectMapper, Project
         log.info("r: {}", r);
         if (r.valid()) {
             String userId = SecurityContextUtil.getAccessUser().getId();
-            String roleCode = this.baseMapper.currentUserRole(projectId, userId, roleId);
-            log.info("roleCode: {}", roleCode);
-            if (StrUtil.isBlank(roleCode)) {
+            ProjectRole projectRole = this.baseMapper.currentUserRole(projectId, userId);
+            log.info("projectRole: {}", projectRole);
+            if (ObjectUtil.isNull(projectRole)) {
                 return R.failed("获取角色权限失败");
             }
             HashMap<String, Object> result = new HashMap<>(2);
-            Integer loginRole = Integer.valueOf(roleCode.split("_")[1]);
+            Integer loginRole = Integer.valueOf(projectRole.getRoleCode().split("_")[1]);
             result.put("loginRole", loginRole);
             result.put("checkboxes", r.getData());
             return R.ok(result);
@@ -352,6 +353,27 @@ public class ProjectServiceImpl extends MartinServiceImpl<ProjectMapper, Project
         result.put("month", month);
         result.put("total", total);
         return R.ok(result);
+    }
+
+    @Override
+    public R currentRolePermission(String projectId) {
+        log.info("projectId: {}", projectId);
+        String userId = SecurityContextUtil.getAccessUser().getId();
+        ProjectRole projectRole = this.baseMapper.currentUserRole(projectId, userId);
+        log.info("projectRole: {}", projectRole);
+        if (ObjectUtil.isNull(projectRole)) {
+            return R.failed("获取角色权限失败");
+        }
+        R r = remoteSystemRole.roleCheckedPermission(projectRole.getRoleId());
+        if (r.valid()) {
+            HashMap<String, Object> result = new HashMap<>(2);
+            Integer loginRole = Integer.valueOf(projectRole.getRoleCode().split("_")[1]);
+            result.put("loginRole", loginRole);
+            result.put("roleCheckedPermission", r.getData());
+            return R.ok(result);
+        } else {
+            return R.failed("获取当前用户角色权限失败");
+        }
     }
 
     /**
