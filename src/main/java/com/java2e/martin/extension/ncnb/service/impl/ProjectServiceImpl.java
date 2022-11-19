@@ -65,11 +65,12 @@ public class ProjectServiceImpl extends MartinServiceImpl<ProjectMapper, Project
     public R projectService(String projectId) {
         log.info("projectId: {}", projectId);
         Project project = this.getById(projectId);
-        HashMap<String, Object> map = new HashMap<>(3);
+        HashMap<String, Object> map = new HashMap<>(4);
         try {
             map.put("configJSON", JsonUtil.parse(new String(project.getConfigJSON()), Map.class));
             map.put("projectJSON", JsonUtil.parse(new String(project.getProjectJSON()), Map.class));
             map.put("projectName", project.getProjectName());
+            map.put("type", project.getType());
         } catch (Exception e) {
             log.error("", e);
             return R.failed(e.getMessage());
@@ -287,7 +288,6 @@ public class ProjectServiceImpl extends MartinServiceImpl<ProjectMapper, Project
     @SneakyThrows
     @Override
     public R saveProject(ProjectDto projectDto) {
-        log.info("projectDto: {}", projectDto);
         QueryWrapper<Project> wrapper = new QueryWrapper<>();
         String id = projectDto.getId();
         if (StrUtil.isBlank(id)) {
@@ -358,6 +358,9 @@ public class ProjectServiceImpl extends MartinServiceImpl<ProjectMapper, Project
     @Override
     public R currentRolePermission(String projectId) {
         log.info("projectId: {}", projectId);
+        if (StrUtil.isBlank(projectId)){
+            return R.failed("projectId 为空");
+        }
         String userId = SecurityContextUtil.getAccessUser().getId();
         ProjectRole projectRole = this.baseMapper.currentUserRole(projectId, userId);
         log.info("projectRole: {}", projectRole);
@@ -369,7 +372,7 @@ public class ProjectServiceImpl extends MartinServiceImpl<ProjectMapper, Project
             HashMap<String, Object> result = new HashMap<>(2);
             Integer loginRole = Integer.valueOf(projectRole.getRoleCode().split("_")[1]);
             result.put("loginRole", loginRole);
-            result.put("roleCheckedPermission", r.getData());
+            result.put("permission", r.getData());
             return R.ok(result);
         } else {
             return R.failed("获取当前用户角色权限失败");

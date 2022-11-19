@@ -49,7 +49,6 @@ public class Common {
             conn.setAutoCommit(true);
             return R.ok(params.get("sql"));
         } catch (Exception var6) {
-            var6.printStackTrace();
             log.error(var6.getMessage(), var6);
             // 若出现异常，对数据库中所有已完成的操作全部撤销，则回滚到事务开始状态
             try {
@@ -58,7 +57,6 @@ public class Common {
                     conn.setAutoCommit(true);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
                 log.error(e.getMessage(), var6);
                 return R.failed(e.getMessage());
             }

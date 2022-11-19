@@ -16,5 +16,6 @@ public class ProjectBaseDto {
     private String projectName;
     private String tags;
     private String description;
+    private String type;
 
 }

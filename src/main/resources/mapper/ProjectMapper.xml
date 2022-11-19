@@ -28,7 +28,7 @@
         </foreach>
     </delete>
     <select id="projectPage" resultType="com.java2e.martin.extension.ncnb.dto.ProjectBaseDto">
-        SELECT p.* from project p
+        SELECT p.id,p.project_name,p.description,p.type,p.tags from project p
         left JOIN project_user pu on pu.project_id=p.id
         <where>
             p.del_flag=0 and pu.user_id=#{param.userId}
@@ -56,7 +56,9 @@
         WHERE to_days(update_time) = to_days(now())
     </select>
     <select id="queryYesterday" resultType="java.lang.Integer">
-        select count(1) from project WHERE TO_DAYS(NOW( ) ) - TO_DAYS(create_time)&lt;=1
+        select count(1)
+        from project
+        WHERE TO_DAYS(NOW()) - TO_DAYS(create_time) &lt;= 1
     </select>
     <select id="queryMonth" resultType="java.lang.Integer">
         select count(1)
