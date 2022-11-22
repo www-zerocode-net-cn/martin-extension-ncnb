@@ -47,49 +47,52 @@ public class SwaggerCodegenServiceImpl implements SwaggerCodegenService {
 
     @Override
     public R springBoot(Map map) {
-        String outputDir = System.getProperty("user.dir") + File.separator + IdUtil.simpleUUID() + File.separator;
+//        String outputDir = System.getProperty("user.dir") + File.separator + IdUtil.simpleUUID() + File.separator;
+        String outputDir = "/Users/masterliang/idea_project/martin/martin-extension/martin-extension-loco/";
+        log.info("outputDir: {}", outputDir);
         //生成 service/mapper
         List<File> services = generateService(outputDir);
         //生成entity/controller
         List<File> apis = generateApi(outputDir);
-        //合并两个结果
-        apis.addAll(services);
-        List<CommitAction> commitActions = null;
-        try {
-            commitActions = readFileForCommit(apis, outputDir);
-        } catch (CDException e) {
-            log.error("读取文件内容失败", e);
-            return R.failed(e.getMessage());
-        }
-        //设置CommitAction的action状态
-        gitlabService.bindCommitAction("4726ce6c8b394119a6a199eaf690dbe0", commitActions, "master");
-        //提交本次生成结果到git
-        CommitPayload commitPayload = new CommitPayload();
-        commitPayload.setActions(commitActions);
-        commitPayload.setAuthorEmail("martin114@foxmail.com");
-        commitPayload.setAuthorName("ncnb");
-        commitPayload.setBranch("master");
-        commitPayload.setCommitMessage("test");
-        return gitlabService.commit("4726ce6c8b394119a6a199eaf690dbe0", commitPayload);
-//        return null;
+//        //合并两个结果
+//        apis.addAll(services);
+//        List<CommitAction> commitActions = null;
+//        try {
+//            commitActions = readFileForCommit(apis, outputDir);
+//        } catch (CDException e) {
+//            log.error("读取文件内容失败", e);
+//            return R.failed(e.getMessage());
+//        }
+//        //设置CommitAction的action状态
+//        gitlabService.bindCommitAction("4726ce6c8b394119a6a199eaf690dbe0", commitActions, "master");
+//        //提交本次生成结果到git
+//        CommitPayload commitPayload = new CommitPayload();
+//        commitPayload.setActions(commitActions);
+//        commitPayload.setAuthorEmail("martin114@foxmail.com");
+//        commitPayload.setAuthorName("ncnb");
+//        commitPayload.setBranch("master");
+//        commitPayload.setCommitMessage("test");
+//        return gitlabService.commit("4726ce6c8b394119a6a199eaf690dbe0", commitPayload);
+        return null;
     }
 
     private List<File> generateApi(String outputDir) {
+        String basePackage = "cn.net.zerocode.loco";
         CodegenConfigurator configurator = new CodegenConfigurator();
         configurator.setLang("spring");
         configurator.setLibrary("spring-boot");
         configurator.setInputSpec("swagger.json");
-        configurator.setApiPackage("com.java2e.ncnb.controller");
-        configurator.setModelPackage("com.java2e.ncnb.entity");
+        configurator.setApiPackage(basePackage + ".controller");
+        configurator.setModelPackage(basePackage + ".entity");
         configurator.addAdditionalProperty("title", "lc520");
-        configurator.addAdditionalProperty("configPackage", "com.java2e.ncnb.configuration");
-        configurator.addAdditionalProperty("basePackage", "com.java2e.ncnb");
+        configurator.addAdditionalProperty("configPackage", basePackage + ".configuration");
+        configurator.addAdditionalProperty("basePackage", basePackage);
         //只生成代理接口，具体方法需要自己实现
         configurator.addAdditionalProperty("interfaceOnly", false);
         configurator.addAdditionalProperty("delegatePattern", false);
         configurator.addAdditionalProperty("delegateMethod", false);
-        configurator.addAdditionalProperty("singleContentTypes", true);
-        configurator.addAdditionalProperty("java8", true);
+        configurator.addAdditionalProperty("singleContentTypes", false);
+        configurator.addAdditionalProperty("java8", false);
         //是否异步执行
         configurator.addAdditionalProperty("async", false);
         configurator.addAdditionalProperty("useTags", false);
@@ -102,6 +105,8 @@ public class SwaggerCodegenServiceImpl implements SwaggerCodegenService {
         configurator.addAdditionalProperty("openFeign", true);
         configurator.addAdditionalProperty("defaultInterfaces", true);
 
+        //移除方法前缀
+//        configurator.setRemoveOperationIdPrefix(true);
         configurator.setOutputDir(outputDir);
 
 
@@ -133,14 +138,15 @@ public class SwaggerCodegenServiceImpl implements SwaggerCodegenService {
 
     private List<File> generateService(String outputDir) {
         Code code = new Code();
-        code.setAuthor("ncnb");
+        code.setAuthor("zerocode");
         code.setDbDriverName("com.mysql.cj.jdbc.Driver");
-        code.setDbPassword("root");
-        code.setDbUrl("jdbc:mysql://martin-mysql:3306/erd?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=GMT%2B8");
-        code.setDbUsername("root");
+        code.setDbUsername("loco");
+        code.setDbPassword("F3WArkwfbwt4R8EC");
+        code.setDbUrl("jdbc:mysql://101.34.87.241:3306/loco?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=GMT%2B8");
         code.setModuleName("");
-        code.setParent("com.java2e.ncnb");
-        code.setTableName("api_design");
+        code.setParent("cn.net.zerocode.loco");
+        code.setTableName("lowcode_apimanager,lowcode_assets,lowcode_block,lowcode_datasource,lowcode_lowdatatyped,lowcode_onlineapi,lowcode_route,lowcode_schema,lowcode_schemasdate");
+        code.setTablePrefix("lowcode_");
         return mybatisPlusCodegen.generateService(code, outputDir);
     }
 

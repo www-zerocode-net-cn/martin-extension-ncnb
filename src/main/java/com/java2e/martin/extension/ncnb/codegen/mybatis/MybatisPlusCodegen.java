@@ -53,6 +53,15 @@ public class MybatisPlusCodegen {
         // 自定义配置
         setInjectionConfig(mpg, outputDir, pc, code);
         mpg.execute();
+
+        //删除controller和entity
+        //filterControllerAndEntity(outputDir);
+
+
+        return FileUtil.loopFiles(outputDir);
+    }
+
+    private void filterControllerAndEntity(String outputDir) {
         List<File> files = FileUtil.loopFiles(outputDir);
         //过滤掉entity与controller，交给swagger生成，因为有些校验需要swagger控制
         files.stream()
@@ -65,9 +74,6 @@ public class MybatisPlusCodegen {
                 files.size(),
                 FileUtil.loopFiles(outputDir).stream().map(file -> file.getPath()).collect(Collectors.toList())
         );
-
-
-        return FileUtil.loopFiles(outputDir);
     }
 
     private void setStrategyConfig(Code code, AutoGenerator mpg) {
@@ -88,7 +94,7 @@ public class MybatisPlusCodegen {
         strategy.setSuperEntityColumns("");
         //配置哪些表要生成代码
         String tables = code.getTableName();
-        strategy.setInclude(tables);
+        strategy.setInclude(tables.split(","));
         strategy.setControllerMappingHyphenStyle(true);
         ArrayList<TableFill> tableFills = new ArrayList<>();
         strategy.setTableFillList(tableFills);
@@ -99,9 +105,11 @@ public class MybatisPlusCodegen {
         TemplateConfig templateConfig = new TemplateConfig();
         // 配置自定义输出模板
         //指定自定义模板路径，注意不要带上.ftl/.vm, 会根据使用的模板引擎自动识别
-        // templateConfig.setEntity("templates/entity2.java");
+//         templateConfig.setEntity("templates/entity2.java");
         // templateConfig.setService();
         templateConfig.setController("templates/controller.java");
+        templateConfig.setService("templates/service.java");
+        templateConfig.setServiceImpl("templates/serviceImpl.java");
         templateConfig.setXml(null);
         mpg.setTemplate(templateConfig);
     }
@@ -174,12 +182,11 @@ public class MybatisPlusCodegen {
         gc.setOpen(false);
         //实体属性 Swagger2 注解
         gc.setSwagger2(true);
-        //不生成controller/entity，交给swagger去生成
-        gc.setControllerName("");
-        gc.setEntityName("");
         // 自定义文件命名，注意 %s 会自动填充表实体属性！
+        gc.setControllerName("%sController");
         gc.setServiceName("%sService");
         gc.setServiceImplName("%sServiceImpl");
+
         gc.setMapperName("%sMapper");
         gc.setXmlName("%sMapper");
         mpg.setGlobalConfig(gc);

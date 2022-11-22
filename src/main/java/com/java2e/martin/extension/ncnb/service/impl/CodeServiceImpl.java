@@ -353,7 +353,7 @@ public class CodeServiceImpl extends MartinServiceImpl<CodeMapper, Code> impleme
         gc.setFileOverride(true);
         gc.setAuthor(code.getAuthor());
         gc.setOpen(false);
-        gc.setIdType(IdType.UUID);
+        gc.setIdType(IdType.ASSIGN_UUID);
         //实体属性 Swagger2 注解
         gc.setSwagger2(true);
         // 自定义文件命名，注意 %s 会自动填充表实体属性！

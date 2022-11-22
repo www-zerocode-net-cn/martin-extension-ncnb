@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 interface ${table.serviceName} : ${superServiceClass}<${entity}>
 #else
 @Transactional(rollbackFor = Exception.class)
-public interface ${table.serviceName} extends ${superServiceClass}<${entity}> {
+public interface ${table.serviceName} extends MartinService<${entity}> {
 
 }
 #end
