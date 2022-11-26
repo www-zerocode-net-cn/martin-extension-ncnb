@@ -1,5 +1,6 @@
 package com.java2e.martin.extension.ncnb.command;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.java2e.martin.common.core.api.R;
 import lombok.SneakyThrows;
@@ -9,8 +10,11 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * @author 狮少
@@ -39,7 +43,12 @@ public class Common {
         try {
             conn.setAutoCommit(false);
             Statement statement = conn.createStatement();
+            List<String> execSqls = Arrays.stream(sqls).filter(f -> StrUtil.isNotBlank(f)).collect(Collectors.toList());
+            if (CollUtil.isEmpty(execSqls)) {
+                return R.failed("不能执行空的sql");
+            }
             for (String s : sqls) {
+
                 if (StrUtil.isNotBlank(s)) {
                     log.info("=========sql==========={}", s);
                     statement.addBatch(s);
