@@ -156,7 +156,11 @@ public class DBReverseParseCommand extends AbstractDBCommand<R> {
                 Field field = new Field();
                 field.setChnname(remarks);
                 field.setName(colName);
-                field.setType(typeName + "(" + columnSize + "," + decimalDigits + ")");
+                if (typeName.contains("INT") && typeName.contains("UNSIGNED") && typeName.contains(" ")) {
+                    field.setType(typeName.split(" ")[0] + "(" + columnSize + "," + decimalDigits + ") " + typeName.split(" ")[1]);
+                } else {
+                    field.setType(typeName + "(" + columnSize + "," + decimalDigits + ")");
+                }
                 field.setPk(pkSet.contains(colName));
                 if (dbType.equals("MYSQL")) {
                     field.setAutoIncrement(!"NO".equalsIgnoreCase(isAutoincrement));
@@ -192,7 +196,11 @@ public class DBReverseParseCommand extends AbstractDBCommand<R> {
                 lenList.add("" + decimalDigits);
             }
 
-            domainTypeName = typeName + "(" + StringKit.join(lenList, ",") + ")";
+            if (typeName.contains("INT") && typeName.contains("UNSIGNED") && typeName.contains(" ")) {
+                domainTypeName = typeName.split(" ")[0] + "(" + StringKit.join(lenList, ",") + ") " + typeName.split(" ")[1];
+            } else {
+                domainTypeName = typeName + "(" + StringKit.join(lenList, ",") + ")";
+            }
         } else if (JdbcKit.isShortString(dataType)) {
             atomList.add("" + columnSize);
             lenList.add("" + columnSize);
