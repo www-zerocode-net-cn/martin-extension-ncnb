@@ -2,11 +2,13 @@ package com.java2e.martin.extension.ncnb.command;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.db.DbUtil;
 import com.java2e.martin.common.core.api.R;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -40,9 +42,9 @@ public class Common {
 
     @SneakyThrows
     public static R execSqls(Map<String, String> params, Connection conn, String[] sqls) {
+        Statement statement = conn.createStatement();
         try {
             conn.setAutoCommit(false);
-            Statement statement = conn.createStatement();
             List<String> execSqls = Arrays.stream(sqls).filter(f -> StrUtil.isNotBlank(f)).collect(Collectors.toList());
             if (CollUtil.isEmpty(execSqls)) {
                 return R.failed("不能执行空的sql");
@@ -55,23 +57,51 @@ public class Common {
                 }
             }
             statement.executeBatch();
-            conn.setAutoCommit(true);
+            //提交事务
+            log.info("提交sql");
+            conn.commit();
             return R.ok(params.get("sql"));
         } catch (Exception var6) {
-            log.error(var6.getMessage(), var6);
-            // 若出现异常，对数据库中所有已完成的操作全部撤销，则回滚到事务开始状态
             try {
-                if (!conn.isClosed()) {
-                    conn.rollback();
-                    conn.setAutoCommit(true);
-                }
+                // 若出现异常，对数据库中所有已完成的操作全部撤销，则回滚到事务开始状态
+                log.error("回滚sql", var6);
+                conn.rollback();
             } catch (Exception e) {
-                log.error(e.getMessage(), var6);
+                log.error("回滚sql失败", var6);
                 return R.failed(e.getMessage());
             }
             return R.failed(var6.getMessage());
         } finally {
-            conn.close();
+            log.error("关闭所有sql连接");
+            closeConnection(conn, statement, null);
         }
+    }
+
+
+    /**
+     * 按照连接方式倒序关闭所有连接
+     *
+     * @param conn
+     * @param stmt
+     * @param resultSet
+     */
+    private static void closeConnection(Connection conn, Statement stmt, ResultSet resultSet) {
+        try {
+            if (resultSet != null) {
+                resultSet.close();
+            }
+
+            if (stmt != null) {
+                stmt.close();
+            }
+
+            if (conn != null) {
+                conn.close();
+            }
+
+        } catch (Exception e) {
+            log.error("关闭数据库连接失败", e);
+        }
+
     }
 }
