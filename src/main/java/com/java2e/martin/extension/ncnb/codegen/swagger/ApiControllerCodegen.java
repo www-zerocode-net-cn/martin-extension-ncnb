@@ -152,7 +152,7 @@ public class ApiControllerCodegen extends DefaultGenerator {
         List<File> files = new ArrayList<File>();
         // models
         List<Object> allModels = new ArrayList<Object>();
-        //generateModels(files, allModels);
+        generateModels(files, allModels);
         // apis
         List<Object> allOperations = new ArrayList<Object>();
         generateApis(files, allOperations, allModels);

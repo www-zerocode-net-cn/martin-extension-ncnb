@@ -21,7 +21,7 @@ import lombok.experimental.Accessors;
  *
  * @author zerocode
  * @version 1.0
- * @date 2022-11-28
+ * @date 2022-12-02
  * @describtion
  * @since 1.0
  */
@@ -37,7 +37,7 @@ public class QueryHistory implements Serializable {
     private String id;
 
     @ApiModelProperty(value = "名称")
-    private String name;
+    private String title;
 
     @ApiModelProperty(value = "SQL语句")
     private String sqlInfo;

@@ -47,7 +47,7 @@ import java.util.stream.Collectors;
  *
  * @author zerocode
  * @version 1.0
- * @date 2022-11-28
+ * @date 2022-12-02
  * @describtion
  * @since 1.0
  */
@@ -77,8 +77,8 @@ public class QueryInfoController{
     @RequestMapping(value = "/queryInfo", method = RequestMethod.GET)
     @MartinLog("分页查询sql信息表 ")
     @SneakyThrows
-    public R list(@Valid Optional<String> description, @Valid Optional<String> creator, @Valid Optional<String> modifier, @Valid Optional<String> deptBelongId, @Valid Optional<String> updateDatetime, @Valid Optional<String> createDatetime, @Valid Optional<BigDecimal> isDeleted, @Valid Optional<String> name, @Valid Optional<String> schema, @Valid Optional<String> typed, @Valid Optional<String> search, @Valid Optional<String> ordering, @Valid Optional<String> page, @Valid Optional<String> limit) {
-        return R.ok(queryInfoService.getPage(new HashMap()));
+    public R list(Map map) {
+        return R.ok(queryInfoService.getPage(map));
     }
 
     @ApiOperation(value = "sql信息表 ", nickname = "multipleDelete", notes = "批量删除sql信息表 ", tags = {"queryInfo",})
@@ -105,8 +105,8 @@ public class QueryInfoController{
     @ApiOperation(value = "sql信息表 ", nickname = "tree", notes = "获取sql信息表 树", tags = {"queryInfo",})
     @RequestMapping(value = "/queryInfo/tree", method = RequestMethod.GET)
     @MartinLog("获取sql信息表 树")
-    public R tree(@Valid Optional<String> description, @Valid Optional<String> creator, @Valid Optional<String> modifier, @Valid Optional<String> deptBelongId, @Valid Optional<String> updateDatetime, @Valid Optional<String> createDatetime, @Valid Optional<BigDecimal> isDeleted, @Valid Optional<String> name, @Valid Optional<String> schema, @Valid Optional<String> typed, @Valid Optional<String> search, @Valid Optional<String> ordering, @Valid Optional<String> page, @Valid Optional<String> limit) {
-        return R.ok(new HashMap<>());
+    public R tree(@ApiParam(value = "", required = true) QueryInfo queryInfo) {
+        return R.ok(queryInfoService.tree(queryInfo));
     }
 
     @ApiOperation(value = "sql信息表 ", nickname = "update", notes = "修改sql信息表 ", tags = {"queryInfo",})

@@ -95,7 +95,7 @@ public class DbChangeServiceImpl extends MartinServiceImpl<DbChangeMapper, DbCha
     @Override
     public R deleteAllHistory(Map map) {
         QueryWrapper<DbChange> wrapper = new QueryWrapper<>();
-        wrapper.eq("project_d", map.get("projectId"));
+        wrapper.eq("project_id", map.get("projectId"));
         wrapper.eq("db_key", map.get("dbKey"));
         return R.ok(this.remove(wrapper));
     }

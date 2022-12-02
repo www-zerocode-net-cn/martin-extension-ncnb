@@ -47,7 +47,7 @@ import java.util.stream.Collectors;
  *
  * @author zerocode
  * @version 1.0
- * @date 2022-11-28
+ * @date 2022-12-02
  * @describtion
  * @since 1.0
  */
@@ -77,8 +77,8 @@ public class QueryHistoryController{
     @RequestMapping(value = "/queryHistory", method = RequestMethod.GET)
     @MartinLog("分页查询sql执行记录表 ")
     @SneakyThrows
-    public R list(@Valid Optional<String> description, @Valid Optional<String> creator, @Valid Optional<String> modifier, @Valid Optional<String> deptBelongId, @Valid Optional<String> updateDatetime, @Valid Optional<String> createDatetime, @Valid Optional<BigDecimal> isDeleted, @Valid Optional<String> name, @Valid Optional<String> schema, @Valid Optional<String> typed, @Valid Optional<String> search, @Valid Optional<String> ordering, @Valid Optional<String> page, @Valid Optional<String> limit) {
-        return R.ok(queryHistoryService.getPage(new HashMap()));
+    public R list(Map map) {
+        return R.ok(queryHistoryService.getPage(map));
     }
 
     @ApiOperation(value = "sql执行记录表 ", nickname = "multipleDelete", notes = "批量删除sql执行记录表 ", tags = {"queryHistory",})
@@ -105,8 +105,8 @@ public class QueryHistoryController{
     @ApiOperation(value = "sql执行记录表 ", nickname = "tree", notes = "获取sql执行记录表 树", tags = {"queryHistory",})
     @RequestMapping(value = "/queryHistory/tree", method = RequestMethod.GET)
     @MartinLog("获取sql执行记录表 树")
-    public R tree(@Valid Optional<String> description, @Valid Optional<String> creator, @Valid Optional<String> modifier, @Valid Optional<String> deptBelongId, @Valid Optional<String> updateDatetime, @Valid Optional<String> createDatetime, @Valid Optional<BigDecimal> isDeleted, @Valid Optional<String> name, @Valid Optional<String> schema, @Valid Optional<String> typed, @Valid Optional<String> search, @Valid Optional<String> ordering, @Valid Optional<String> page, @Valid Optional<String> limit) {
-        return R.ok(new HashMap<>());
+    public R tree(@ApiParam(value = "", required = true) QueryHistory queryHistory) {
+        return R.ok(queryHistoryService.tree(queryHistory));
     }
 
     @ApiOperation(value = "sql执行记录表 ", nickname = "update", notes = "修改sql执行记录表 ", tags = {"queryHistory",})

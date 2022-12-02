@@ -141,35 +141,7 @@
         ],
         "responses": {
           "200": {
-            "description": "",
-            "schema": {
-              "required": [
-                "count",
-                "results"
-              ],
-              "type": "object",
-              "properties": {
-                "count": {
-                  "type": "integer"
-                },
-                "next": {
-                  "type": "string",
-                  "format": "uri",
-                  "x-nullable": true
-                },
-                "previous": {
-                  "type": "string",
-                  "format": "uri",
-                  "x-nullable": true
-                },
-                "results": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/Apimanager"
-                  }
-                }
-              }
-            }
+            "description": ""
           }
         },
         "tags": [
@@ -215,17 +187,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "required": [
-                "keys"
-              ],
-              "type": "object",
-              "properties": {
-                "keys": {
-                  "description": "主键列表",
-                  "type": "array",
-                  "items": "string"
-                }
-              }
+              "$ref": "#/definitions/MultiDelete"
             }
           }
         ],
@@ -585,35 +547,7 @@
         ],
         "responses": {
           "200": {
-            "description": "",
-            "schema": {
-              "required": [
-                "count",
-                "results"
-              ],
-              "type": "object",
-              "properties": {
-                "count": {
-                  "type": "integer"
-                },
-                "next": {
-                  "type": "string",
-                  "format": "uri",
-                  "x-nullable": true
-                },
-                "previous": {
-                  "type": "string",
-                  "format": "uri",
-                  "x-nullable": true
-                },
-                "results": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/Assets"
-                  }
-                }
-              }
-            }
+            "description": ""
           }
         },
         "tags": [
@@ -659,17 +593,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "required": [
-                "keys"
-              ],
-              "type": "object",
-              "properties": {
-                "keys": {
-                  "description": "主键列表",
-                  "type": "array",
-                  "items": "string"
-                }
-              }
+              "$ref": "#/definitions/MultiDelete"
             }
           }
         ],
@@ -836,35 +760,7 @@
         ],
         "responses": {
           "200": {
-            "description": "",
-            "schema": {
-              "required": [
-                "count",
-                "results"
-              ],
-              "type": "object",
-              "properties": {
-                "count": {
-                  "type": "integer"
-                },
-                "next": {
-                  "type": "string",
-                  "format": "uri",
-                  "x-nullable": true
-                },
-                "previous": {
-                  "type": "string",
-                  "format": "uri",
-                  "x-nullable": true
-                },
-                "results": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/Block"
-                  }
-                }
-              }
-            }
+            "description": ""
           }
         },
         "tags": [
@@ -910,17 +806,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "required": [
-                "keys"
-              ],
-              "type": "object",
-              "properties": {
-                "keys": {
-                  "description": "主键列表",
-                  "type": "array",
-                  "items": "string"
-                }
-              }
+              "$ref": "#/definitions/MultiDelete"
             }
           }
         ],
@@ -1164,35 +1050,7 @@
         ],
         "responses": {
           "200": {
-            "description": "",
-            "schema": {
-              "required": [
-                "count",
-                "results"
-              ],
-              "type": "object",
-              "properties": {
-                "count": {
-                  "type": "integer"
-                },
-                "next": {
-                  "type": "string",
-                  "format": "uri",
-                  "x-nullable": true
-                },
-                "previous": {
-                  "type": "string",
-                  "format": "uri",
-                  "x-nullable": true
-                },
-                "results": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/Datasource"
-                  }
-                }
-              }
-            }
+            "description": ""
           }
         },
         "tags": [
@@ -1238,17 +1096,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "required": [
-                "keys"
-              ],
-              "type": "object",
-              "properties": {
-                "keys": {
-                  "description": "主键列表",
-                  "type": "array",
-                  "items": "string"
-                }
-              }
+              "$ref": "#/definitions/MultiDelete"
             }
           }
         ],
@@ -1636,35 +1484,7 @@
         ],
         "responses": {
           "200": {
-            "description": "",
-            "schema": {
-              "required": [
-                "count",
-                "results"
-              ],
-              "type": "object",
-              "properties": {
-                "count": {
-                  "type": "integer"
-                },
-                "next": {
-                  "type": "string",
-                  "format": "uri",
-                  "x-nullable": true
-                },
-                "previous": {
-                  "type": "string",
-                  "format": "uri",
-                  "x-nullable": true
-                },
-                "results": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/Lowdatatyped"
-                  }
-                }
-              }
-            }
+            "description": ""
           }
         },
         "tags": [
@@ -1710,17 +1530,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "required": [
-                "keys"
-              ],
-              "type": "object",
-              "properties": {
-                "keys": {
-                  "description": "主键列表",
-                  "type": "array",
-                  "items": "string"
-                }
-              }
+              "$ref": "#/definitions/MultiDelete"
             }
           }
         ],
@@ -2224,35 +2034,7 @@
         ],
         "responses": {
           "200": {
-            "description": "",
-            "schema": {
-              "required": [
-                "count",
-                "results"
-              ],
-              "type": "object",
-              "properties": {
-                "count": {
-                  "type": "integer"
-                },
-                "next": {
-                  "type": "string",
-                  "format": "uri",
-                  "x-nullable": true
-                },
-                "previous": {
-                  "type": "string",
-                  "format": "uri",
-                  "x-nullable": true
-                },
-                "results": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/Assets"
-                  }
-                }
-              }
-            }
+            "description": ""
           }
         },
         "tags": [
@@ -2424,35 +2206,7 @@
         ],
         "responses": {
           "200": {
-            "description": "",
-            "schema": {
-              "required": [
-                "count",
-                "results"
-              ],
-              "type": "object",
-              "properties": {
-                "count": {
-                  "type": "integer"
-                },
-                "next": {
-                  "type": "string",
-                  "format": "uri",
-                  "x-nullable": true
-                },
-                "previous": {
-                  "type": "string",
-                  "format": "uri",
-                  "x-nullable": true
-                },
-                "results": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/Onlineapi"
-                  }
-                }
-              }
-            }
+            "description": ""
           }
         },
         "tags": [
@@ -2498,17 +2252,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "required": [
-                "keys"
-              ],
-              "type": "object",
-              "properties": {
-                "keys": {
-                  "description": "主键列表",
-                  "type": "array",
-                  "items": "string"
-                }
-              }
+              "$ref": "#/definitions/MultiDelete"
             }
           }
         ],
@@ -2767,35 +2511,7 @@
         ],
         "responses": {
           "200": {
-            "description": "",
-            "schema": {
-              "required": [
-                "count",
-                "results"
-              ],
-              "type": "object",
-              "properties": {
-                "count": {
-                  "type": "integer"
-                },
-                "next": {
-                  "type": "string",
-                  "format": "uri",
-                  "x-nullable": true
-                },
-                "previous": {
-                  "type": "string",
-                  "format": "uri",
-                  "x-nullable": true
-                },
-                "results": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/Schema"
-                  }
-                }
-              }
-            }
+            "description": ""
           }
         },
         "tags": [
@@ -2841,17 +2557,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "required": [
-                "keys"
-              ],
-              "type": "object",
-              "properties": {
-                "keys": {
-                  "description": "主键列表",
-                  "type": "array",
-                  "items": "string"
-                }
-              }
+              "$ref": "#/definitions/MultiDelete"
             }
           }
         ],
@@ -3680,8 +3386,17 @@
           "x-nullable": true
         }
       }
+    },
+    "MultiDelete": {
+      "type": "object",
+      "properties": {
+        "keys": {
+          "description": "主键列表",
+          "type": "array",
+          "items": "string"
+        }
+      }
     }
-
   },
   "tags": [
     {

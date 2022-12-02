@@ -21,7 +21,7 @@ import lombok.experimental.Accessors;
  *
  * @author zerocode
  * @version 1.0
- * @date 2022-11-28
+ * @date 2022-12-02
  * @describtion
  * @since 1.0
  */
@@ -40,10 +40,16 @@ public class QueryInfo implements Serializable {
     private String parentId;
 
     @ApiModelProperty(value = "名称")
-    private String name;
+    private String title;
 
     @ApiModelProperty(value = "SQL语句")
     private String sqlInfo;
+
+    @ApiModelProperty(value = "是否为叶子节点:1为true，0为false")
+    private Boolean isLeaf;
+
+    @ApiModelProperty(value = "所属项目")
+    private String projectId;
 
     @ApiModelProperty(value = "乐观锁")
     private Integer revision;

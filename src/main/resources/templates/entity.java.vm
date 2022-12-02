@@ -4,9 +4,12 @@ package com.java2e.martin.common.bean.${cfg.moduleName}.$!{entity};
 package ${package.Entity};
 #end
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 #foreach($pkg in ${table.importPackages})
 import ${pkg};
 #end
+import com.java2e.martin.common.bean.system.User;
 import com.java2e.martin.common.core.annotation.BindField;
 import com.java2e.martin.common.core.constant.CommonConstants;
 #if(${swagger2})

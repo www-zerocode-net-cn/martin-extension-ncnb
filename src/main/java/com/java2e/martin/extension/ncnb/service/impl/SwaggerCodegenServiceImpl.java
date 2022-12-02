@@ -1,7 +1,6 @@
 package com.java2e.martin.extension.ncnb.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.IdUtil;
 import com.java2e.martin.extension.ncnb.codegen.mybatis.MybatisPlusCodegen;
 import com.java2e.martin.extension.ncnb.codegen.swagger.ApiControllerCodegen;
 import com.java2e.martin.extension.ncnb.entity.Code;
@@ -14,7 +13,6 @@ import io.swagger.codegen.CodegenConstants;
 import io.swagger.codegen.config.CodegenConfigurator;
 import lombok.extern.slf4j.Slf4j;
 import org.gitlab4j.api.models.CommitAction;
-import org.gitlab4j.api.models.CommitPayload;
 import org.gitlab4j.api.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,13 +46,15 @@ public class SwaggerCodegenServiceImpl implements SwaggerCodegenService {
     @Override
     public R springBoot(Map map) {
 //        String outputDir = System.getProperty("user.dir") + File.separator + IdUtil.simpleUUID() + File.separator;
-        String outputDir = "/Users/masterliang/idea_project/martin/martin-extension/martin-extension-loco/";
-        log.info("outputDir: {}", outputDir);
-        //生成 service/mapper
-        List<File> services = generateService(outputDir);
+        String locoOutputDir = "/Users/masterliang/idea_project/martin/martin-extension/martin-extension-loco/";
+        String erdOutputDir = "/Users/masterliang/idea_project/martin/martin-extension/martin-extension-ncnb/";
+        log.info("outputDir: {}", erdOutputDir);
         //生成entity/controller
-        List<File> apis = generateApi(outputDir);
-//        //合并两个结果
+//        List<File> apis = generateApi(outputDir);
+        //生成 service/mapper
+//        List<File> services = generateLocoService(locoOutputDir);
+        generateErdService(erdOutputDir);
+        //合并两个结果
 //        apis.addAll(services);
 //        List<CommitAction> commitActions = null;
 //        try {
@@ -136,17 +136,31 @@ public class SwaggerCodegenServiceImpl implements SwaggerCodegenService {
         return apiControllerCodegen.opts(input).generate();
     }
 
-    private List<File> generateService(String outputDir) {
+    private List<File> generateLocoService(String outputDir) {
         Code code = new Code();
         code.setAuthor("zerocode");
         code.setDbDriverName("com.mysql.cj.jdbc.Driver");
-        code.setDbUsername("loco");
-        code.setDbPassword("F3WArkwfbwt4R8EC");
-        code.setDbUrl("jdbc:mysql://101.34.87.241:3306/loco?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=GMT%2B8");
+        code.setDbUsername("root");
+        code.setDbPassword("root");
+        code.setDbUrl("jdbc:mysql://localhost:3306/loco?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=GMT%2B8");
         code.setModuleName("");
         code.setParent("cn.net.zerocode.loco");
-        code.setTableName("lowcode_apimanager,lowcode_assets,lowcode_block,lowcode_datasource,lowcode_lowdatatyped,lowcode_onlineapi,lowcode_route,lowcode_schema,lowcode_schemasdate");
+        code.setTableName("lowcode_asset,lowcode_block,lowcode_data_type,lowcode_schema");
         code.setTablePrefix("lowcode_");
+        return mybatisPlusCodegen.generateService(code, outputDir);
+    }
+
+    private List<File> generateErdService(String outputDir) {
+        Code code = new Code();
+        code.setAuthor("zerocode");
+        code.setDbDriverName("com.mysql.cj.jdbc.Driver");
+        code.setDbUsername("root");
+        code.setDbPassword("root");
+        code.setDbUrl("jdbc:mysql://localhost:3306/erd?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=GMT%2B8");
+        code.setModuleName("");
+        code.setParent("com.java2e.martin.extension.ncnb");
+        code.setTableName("query_info,query_history");
+        code.setTablePrefix("");
         return mybatisPlusCodegen.generateService(code, outputDir);
     }
 
