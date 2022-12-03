@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.java2e.martin.common.bean.system.MultiDelete;
 import com.java2e.martin.common.core.api.R;
 import com.java2e.martin.common.log.annotation.MartinLog;
+import com.java2e.martin.extension.ncnb.command.DbSqlExecCommand;
 import io.swagger.annotations.ApiOperation;
 
 
@@ -39,7 +40,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 
-
 /**
  * <p>
  * sql信息表  路由
@@ -54,7 +54,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestController
 @RequestMapping
-public class QueryInfoController{
+public class QueryInfoController {
 
     @Autowired
     private QueryInfoService queryInfoService;
@@ -112,10 +112,18 @@ public class QueryInfoController{
     @ApiOperation(value = "sql信息表 ", nickname = "update", notes = "修改sql信息表 ", tags = {"queryInfo",})
     @RequestMapping(value = "/queryInfo/{id}", method = RequestMethod.PUT)
     @MartinLog("编辑sql信息表 ")
-    public R update(@ApiParam(value = "Id", required = true) @PathVariable("id")  String id,  @ApiParam(value = "", required = true) @Valid @RequestBody  QueryInfo queryInfo) {
+    public R update(@ApiParam(value = "Id", required = true) @PathVariable("id") String id, @ApiParam(value = "", required = true) @Valid @RequestBody QueryInfo queryInfo) {
         LambdaQueryWrapper<QueryInfo> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(QueryInfo::getId, id);
-        return R.ok(queryInfoService.update(queryInfo,wrapper));
+        return R.ok(queryInfoService.update(queryInfo, wrapper));
+    }
+
+
+    @ApiOperation(value = "执行sql ", nickname = "exec", notes = "执行sql ", tags = {"queryInfo",})
+    @RequestMapping(value = "/queryInfo/exec", method = RequestMethod.POST)
+    @MartinLog("执行sql ")
+    public R exec(@RequestBody Map map) {
+        return R.ok(queryInfoService.exec(map));
     }
 }
 

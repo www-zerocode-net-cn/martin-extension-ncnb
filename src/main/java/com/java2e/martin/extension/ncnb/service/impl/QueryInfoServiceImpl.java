@@ -6,6 +6,8 @@ import com.java2e.martin.extension.ncnb.service.QueryInfoService;
 import com.java2e.martin.common.data.mybatis.service.impl.MartinServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 /**
  * <p>
  * sql信息表  服务实现类
@@ -22,5 +24,11 @@ public class QueryInfoServiceImpl extends MartinServiceImpl<QueryInfoMapper, Que
     @Override
     protected void setEntity() {
         this.clz = QueryInfo.class;
+    }
+
+    @Override
+    public Object exec(Map map) {
+
+        return null;
     }
 }
