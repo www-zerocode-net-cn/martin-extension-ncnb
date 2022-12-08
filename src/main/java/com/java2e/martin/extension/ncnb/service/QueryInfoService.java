@@ -1,5 +1,7 @@
 package com.java2e.martin.extension.ncnb.service;
 
+import com.java2e.martin.common.core.api.R;
+import com.java2e.martin.common.data.dynamic.annotation.Dynamic;
 import com.java2e.martin.extension.ncnb.entity.QueryInfo;
 import com.java2e.martin.common.data.mybatis.service.MartinService;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,8 +24,17 @@ public interface QueryInfoService extends MartinService<QueryInfo> {
 
     /**
      * 执行sql，并且返回列和分页数据
+     *
      * @param map
      * @return
      */
-    Object exec(Map map);
+    R exec(Map map);
+
+    /**
+     * 分析sql执行计划
+     *
+     * @param map
+     * @return
+     */
+    R explain(Map map);
 }

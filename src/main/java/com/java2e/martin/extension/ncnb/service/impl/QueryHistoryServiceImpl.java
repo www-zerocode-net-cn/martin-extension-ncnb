@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
  *
  * @author zerocode
  * @version 1.0
- * @date 2022-12-02
+ * @date 2022-12-03
  * @describtion
  * @since 1.0
  */
@@ -22,5 +22,10 @@ public class QueryHistoryServiceImpl extends MartinServiceImpl<QueryHistoryMappe
     @Override
     protected void setEntity() {
         this.clz = QueryHistory.class;
+    }
+
+    @Override
+    public void saveLog(QueryHistory queryHistory) {
+
     }
 }

@@ -1,6 +1,7 @@
 package com.java2e.martin.extension.ncnb.command;
 
 
+import cn.hutool.core.exceptions.ExceptionUtil;
 import com.java2e.martin.common.core.api.R;
 import com.java2e.martin.extension.ncnb.model.DataType;
 import com.java2e.martin.extension.ncnb.model.Entity;
@@ -45,7 +46,8 @@ public class DBReverseParseCommand extends AbstractDBCommand<R> {
             dbType = StringKit.nvl(conn.getMetaData().getDatabaseProductName(), "MYSQL").toUpperCase();
         } catch (Exception var6) {
             log.error("", var6);
-            return R.failed(var6.getMessage());
+            Throwable causedBy = ExceptionUtil.getCausedBy(var6, SQLException.class);
+            return R.failed(causedBy.getMessage());
         }
 
         ParseDataModel dataModel = new ParseDataModel();

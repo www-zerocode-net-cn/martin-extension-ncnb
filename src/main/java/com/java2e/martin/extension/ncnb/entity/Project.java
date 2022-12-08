@@ -86,7 +86,6 @@ public class Project implements Serializable {
      * 创建人
      */
     @TableField(fill = FieldFill.INSERT)
-    @BindField(entity = User.class, field = CommonConstants.USER_USERNAME)
     private String creator;
 
     /**
@@ -99,7 +98,6 @@ public class Project implements Serializable {
      * 更新人
      */
     @TableField(fill = FieldFill.UPDATE)
-    @BindField(entity = User.class, field = CommonConstants.USER_USERNAME)
     private String updater;
 
     /**

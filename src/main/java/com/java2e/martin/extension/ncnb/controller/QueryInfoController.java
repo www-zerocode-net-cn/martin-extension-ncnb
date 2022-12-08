@@ -3,6 +3,7 @@ package com.java2e.martin.extension.ncnb.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.java2e.martin.common.bean.system.MultiDelete;
 import com.java2e.martin.common.core.api.R;
+import com.java2e.martin.common.data.dynamic.annotation.Dynamic;
 import com.java2e.martin.common.log.annotation.MartinLog;
 import com.java2e.martin.extension.ncnb.command.DbSqlExecCommand;
 import io.swagger.annotations.ApiOperation;
@@ -77,7 +78,7 @@ public class QueryInfoController {
     @RequestMapping(value = "/queryInfo", method = RequestMethod.GET)
     @MartinLog("分页查询sql信息表 ")
     @SneakyThrows
-    public R list(Map map) {
+    public R list(@RequestParam Map<String,Object> map) {
         return R.ok(queryInfoService.getPage(map));
     }
 
@@ -122,8 +123,18 @@ public class QueryInfoController {
     @ApiOperation(value = "执行sql ", nickname = "exec", notes = "执行sql ", tags = {"queryInfo",})
     @RequestMapping(value = "/queryInfo/exec", method = RequestMethod.POST)
     @MartinLog("执行sql ")
+    @Dynamic
     public R exec(@RequestBody Map map) {
-        return R.ok(queryInfoService.exec(map));
+        return queryInfoService.exec(map);
+    }
+
+
+    @ApiOperation(value = "分析sql执行计划", nickname = "explain", notes = "分析sql执行计划 ", tags = {"queryInfo",})
+    @RequestMapping(value = "/queryInfo/explain", method = RequestMethod.POST)
+    @MartinLog("分析sql执行计划 ")
+    @Dynamic
+    public R explain(@RequestBody Map map) {
+        return queryInfoService.explain(map);
     }
 }
 

@@ -107,17 +107,17 @@ public class ${entity} implements Serializable {
     @TableField(fill = FieldFill.UPDATE)
 #end
 ## 绑定菜单字段
-#if($field.propertyName=='menuId' )
-    @BindField(entity = Menu.class, field = "name")
-#end
+###if($field.propertyName=='menuId' )
+##    @BindField(entity = Menu.class, field = "name")
+###end
 ## 绑定部门字段
-#if($field.propertyName=='deptId' )
-    @BindField(entity = Dept.class, field = "name")
-#end
+###if($field.propertyName=='deptId' )
+##    @BindField(entity = Dept.class, field = "name")
+###end
 ## 绑定查询字段
-#if($field.propertyName=='creator' || $field.propertyName=='updater' )
-    @BindField(entity = User.class, field = CommonConstants.USER_USERNAME)
-#end
+###if($field.propertyName=='creator' || $field.propertyName=='updater' )
+##    @BindField(entity = User.class, field = CommonConstants.USER_USERNAME)
+###end
 ## 逻辑删除注解
 #if(${logicDeleteFieldName}==${field.name})
     @TableLogic

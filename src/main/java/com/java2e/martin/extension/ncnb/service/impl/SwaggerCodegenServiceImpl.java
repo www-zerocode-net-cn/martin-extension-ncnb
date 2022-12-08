@@ -159,7 +159,7 @@ public class SwaggerCodegenServiceImpl implements SwaggerCodegenService {
         code.setDbUrl("jdbc:mysql://localhost:3306/erd?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=GMT%2B8");
         code.setModuleName("");
         code.setParent("com.java2e.martin.extension.ncnb");
-        code.setTableName("query_info,query_history");
+        code.setTableName("query_history");
         code.setTablePrefix("");
         return mybatisPlusCodegen.generateService(code, outputDir);
     }

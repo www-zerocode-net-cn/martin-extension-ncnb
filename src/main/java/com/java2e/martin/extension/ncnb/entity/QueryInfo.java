@@ -59,6 +59,7 @@ public class QueryInfo implements Serializable {
     private String delFlag;
 
     @ApiModelProperty(value = "创建人")
+    @TableField(fill = FieldFill.INSERT)
     @BindField(entity = User.class, field = CommonConstants.USER_USERNAME)
     private String creator;
 
@@ -67,6 +68,7 @@ public class QueryInfo implements Serializable {
     private LocalDateTime createTime;
 
     @ApiModelProperty(value = "更新人")
+    @TableField(fill = FieldFill.UPDATE)
     @BindField(entity = User.class, field = CommonConstants.USER_USERNAME)
     private String updater;
 

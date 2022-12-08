@@ -42,7 +42,6 @@ public class DbVersion implements Serializable {
      * 创建人
      */
     @TableField(fill = FieldFill.INSERT)
-    @BindField(entity = User.class, field = CommonConstants.USER_USERNAME)
     private String creator;
 
     /**

@@ -21,7 +21,7 @@ import lombok.experimental.Accessors;
  *
  * @author zerocode
  * @version 1.0
- * @date 2022-12-02
+ * @date 2022-12-03
  * @describtion
  * @since 1.0
  */
@@ -42,6 +42,15 @@ public class QueryHistory implements Serializable {
     @ApiModelProperty(value = "SQL语句")
     private String sqlInfo;
 
+    @ApiModelProperty(value = "执行数据库")
+    private String dbName;
+
+    @ApiModelProperty(value = "耗时")
+    private Long duration;
+
+    @ApiModelProperty(value = "所属查询")
+    private String queryId;
+
     @ApiModelProperty(value = "乐观锁")
     private Integer revision;
 
@@ -50,7 +59,7 @@ public class QueryHistory implements Serializable {
     private String delFlag;
 
     @ApiModelProperty(value = "创建人")
-    @BindField(entity = User.class, field = CommonConstants.USER_USERNAME)
+    @TableField(fill = FieldFill.INSERT)
     private String creator;
 
     @ApiModelProperty(value = "创建时间")
@@ -58,7 +67,7 @@ public class QueryHistory implements Serializable {
     private LocalDateTime createTime;
 
     @ApiModelProperty(value = "更新人")
-    @BindField(entity = User.class, field = CommonConstants.USER_USERNAME)
+    @TableField(fill = FieldFill.UPDATE)
     private String updater;
 
     @ApiModelProperty(value = "更新时间")

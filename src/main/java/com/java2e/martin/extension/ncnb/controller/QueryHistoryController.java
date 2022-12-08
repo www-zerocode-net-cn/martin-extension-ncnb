@@ -47,7 +47,7 @@ import java.util.stream.Collectors;
  *
  * @author zerocode
  * @version 1.0
- * @date 2022-12-02
+ * @date 2022-12-03
  * @describtion
  * @since 1.0
  */
@@ -77,7 +77,7 @@ public class QueryHistoryController{
     @RequestMapping(value = "/queryHistory", method = RequestMethod.GET)
     @MartinLog("分页查询sql执行记录表 ")
     @SneakyThrows
-    public R list(Map map) {
+    public R list(@RequestParam Map<String,Object> map) {
         return R.ok(queryHistoryService.getPage(map));
     }
 

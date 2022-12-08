@@ -1,6 +1,7 @@
 package com.java2e.martin.extension.ncnb.command;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.db.DbUtil;
 import com.java2e.martin.common.core.api.R;
@@ -9,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -70,7 +72,8 @@ public class Common {
                 log.error("回滚sql失败", var6);
                 return R.failed(e.getMessage());
             }
-            return R.failed(var6.getMessage());
+            Throwable causedBy = ExceptionUtil.getCausedBy(var6, SQLException.class);
+            return R.failed(causedBy.getMessage());
         } finally {
             log.error("关闭所有sql连接");
             closeConnection(conn, statement, null);

@@ -109,7 +109,7 @@ public class ${table.controllerName}{
     @RequestMapping(value = "/$!{entityname}", method = RequestMethod.GET)
     @MartinLog("分页查询$!{table.comment}")
     @SneakyThrows
-    public R list(Map map) {
+    public R list(@RequestParam Map<String,Object> map) {
         return R.ok($!{servicename}.getPage(map));
     }
 

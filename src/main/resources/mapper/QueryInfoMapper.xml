@@ -2,4 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.java2e.martin.extension.ncnb.mapper.QueryInfoMapper">
 
+    <select id="exec" resultType="java.util.LinkedHashMap">
+        ${sql}
+    </select>
+    <select id="explain" resultType="java.util.LinkedHashMap" parameterType="java.lang.String">
+        explain ${sql}
+    </select>
 </mapper>
