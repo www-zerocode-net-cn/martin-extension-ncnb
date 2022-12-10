@@ -5,12 +5,12 @@
     <parent>
         <artifactId>martin-extension</artifactId>
         <groupId>com.java2e</groupId>
-        <version>1.0.4</version>
+        <version>1.0.5</version>
     </parent>
 
     <groupId>com.java2e</groupId>
     <artifactId>martin-extension-ncnb</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
     <packaging>jar</packaging>
 
     <modelVersion>4.0.0</modelVersion>
