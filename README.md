@@ -14,5 +14,5 @@ https://account-devops.aliyun.com/account/invite?sign=06b30d1985e5a9aafe0f02ba9e
 
 (链接有效期至 2023-01-11 23:19:25)
 
-过期私聊我，手动拉你进去
+过期私聊我，手动拉你进去。
 
