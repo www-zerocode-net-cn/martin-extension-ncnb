@@ -9,10 +9,7 @@ ERD后端服务
 - 第三部，提交三个PR之后，会开放ERD整个后端基础架构权限
 
 加入maven私有仓库：
-
-https://account-devops.aliyun.com/account/invite?sign=06b30d1985e5a9aafe0f02ba9edf9973&next_url=https%3A%2F%2Fpackages.aliyun.com%3ForgId%3D63bc1986b74e9ef36867afeb
-
-(链接有效期至 2023-01-11 23:19:25)
-
-过期私聊我，手动拉你进去。
+- 关注公众号`零代科技`
+![mp](https://user-images.githubusercontent.com/26294919/220923902-9b4d5d9d-11a3-4573-993b-08b95b7718ca.jpg)
+- 发送暗号`952702`
 
