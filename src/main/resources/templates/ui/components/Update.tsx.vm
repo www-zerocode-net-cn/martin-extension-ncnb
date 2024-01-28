@@ -1,0 +1,51 @@
+import React from 'react';
+import {message} from 'antd';
+import ProForm, {DrawerForm, ProFormText,} from '@ant-design/pro-form';
+#parse('/templates/ui/components/Import.tsx.vm')
+import {FormattedMessage} from "@@/plugin-locale/localeExports";
+import {edit} from "@/services/crud";
+import {useIntl} from "umi";
+import {$!{entity}Item} from "@/pages/${cfg.moduleName}/${table.entityPath}";
+
+export type UpdateProps = {
+  refresh: () => void;
+  values: Partial<$!{entity}Item>;
+};
+
+const Update: React.FC<UpdateProps> = (props) => {
+  const intl = useIntl();
+  return (
+    <>
+      <DrawerForm
+        key={"update"}
+        title={<FormattedMessage id="app.${table.entityPath}.edit-the-${table.entityPath}"/>}
+        width={'30%'}
+        trigger={
+          <a key="update"><FormattedMessage id="component.common.text.edit"/></a>
+        }
+        onFinish={async (values: $!{entity}Item) => {
+          const result = await edit('/$!{cfg.moduleCode}/${table.entityPath}', values);
+          if (result.code === 200) {
+            message.success(
+              intl.formatMessage({
+                id: 'component.common.text.edit-success',
+              })
+            );
+            props.refresh();
+          } else {
+            message.error(result.msg);
+          }
+        }}
+        initialValues={props.values}
+      >
+        <ProForm.Group style={{display:"none"}}>
+          <ProFormText
+              name="id"
+          />
+        </ProForm.Group>
+#parse('/templates/ui/components/Column.tsx.vm')
+      </DrawerForm>
+    </>
+  );
+};
+export default Update;

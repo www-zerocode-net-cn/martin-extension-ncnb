@@ -1,0 +1,25 @@
+package ${package.Mapper};
+
+#if($cfg.moduleName=='system')
+import com.java2e.martin.common.bean.${cfg.moduleName}.$!{entity};
+#else
+import $!{package.Entity}.$!{entity};
+#end
+import ${superMapperClassPackage};
+
+/**
+ * $!{table.comment} Mapper
+ *
+ * @author ${author}
+ * @version 1.0
+ * @date ${date}
+ * @describtion
+ * @since 1.0
+ */
+#if(${kotlin})
+interface ${table.mapperName} : ${superMapperClass}<${entity}>
+#else
+public interface ${table.mapperName} extends ${superMapperClass}<${entity}> {
+
+}
+#end

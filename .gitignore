@@ -1,0 +1,8 @@
+/target/
+src/main/java/rebel.xml
+src/main/resources/rebel.xml
+*.iml
+.DS_Store
+.idea
+reset_git.sh
+clear_git.sh

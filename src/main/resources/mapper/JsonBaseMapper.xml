@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.java2e.martin.extension.ncnb.mapper.JsonBaseMapper">
+    <insert id="insertJson">
+        UPDATE project
+        set projectJSON=JSON_ARRAY_APPEND(projectJSON, #{path}, CAST(#{value} AS JSON))
+        where id = #{id}
+        and !JSON_CONTAINS(projectJSON,CAST(#{value} AS JSON),#{path})
+    </insert>
+    <delete id="removeJson">
+        UPDATE project
+        set projectJSON=JSON_REMOVE(projectJSON, #{path})
+        where id = #{id}
+    </delete>
+
+    <select id="getPathByName" resultType="java.lang.String">
+        SELECT JSON_SEARCH(projectJSON, 'one', #{name}, null, #{path})
+        from project
+        where id = #{id}
+    </select>
+    <select id="jsonSchemaValid" resultType="java.lang.Boolean" parameterType="java.lang.String">
+        SELECT JSON_SCHEMA_VALID(`${jsonSchema}`,CAST(#{value} AS JSON))  from erd_json_schema limit 1
+    </select>
+</mapper>

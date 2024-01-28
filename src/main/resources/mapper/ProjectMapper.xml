@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.java2e.martin.extension.ncnb.mapper.ProjectMapper">
+
+    <insert id="bindProjectUser">
+        INSERT INTO project_user (id, project_id, user_id, role_id)
+        VALUES (UUID_SHORT(), #{projectId}, #{userId}, #{roleId});
+    </insert>
+    <insert id="batchBindProjectUser">
+        insert into project_user (id, project_id, user_id,role_id) values
+        <foreach collection="userIds" item="item" index="index" separator=",">
+            (
+            UUID_SHORT(),
+            #{projectId},
+            #{item},
+            #{roleId}
+            )
+        </foreach>
+    </insert>
+    <delete id="removeUserFromGroup" parameterType="com.java2e.martin.common.api.dto.RoleUserDto">
+        delete
+        from project_user pu
+        where
+        project_id = #{projectId} and pu.role_id=#{roleId}
+        and user_id in
+        <foreach collection="userIds" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </delete>
+    <select id="projectPage" resultType="com.java2e.martin.extension.ncnb.dto.ProjectBaseDto">
+        SELECT p.id,p.project_name,p.description,p.type,p.tags,p.update_time,p.updater from project p
+        left JOIN project_user pu on pu.project_id=p.id
+        <where>
+            p.del_flag=0 and pu.user_id=#{param.userId}
+            <if test="param.projectName!=null and param.projectName!=''">
+                and p.project_name like CONCAT('%',#{param.projectName},'%')
+            </if>
+            <if test="param.type!=null and param.type!=''">
+                and p.type =#{param.type}
+            </if>
+        </where>
+        GROUP BY p.id
+        order by p.create_time desc
+    </select>
+    <select id="currentUserRole" resultType="com.java2e.martin.extension.ncnb.entity.ProjectRole">
+        SELECT pr.*
+        from project_role pr
+                 INNER JOIN project_user pu on pr.project_id = pu.project_id and pr.role_id = pu.role_id
+        where pu.user_id = #{userId}
+          and pu.project_id = #{projectId}
+        ORDER BY pr.role_code LIMIT 1
+    </select>
+    <select id="queryToday" resultType="java.lang.Integer">
+        select count(1)
+        from project
+        WHERE to_days(update_time) = to_days(now())
+    </select>
+    <select id="queryYesterday" resultType="java.lang.Integer">
+        select count(1)
+        from project
+        WHERE TO_DAYS(NOW()) - TO_DAYS(create_time) &lt;= 1
+    </select>
+    <select id="queryMonth" resultType="java.lang.Integer">
+        select count(1)
+        from project
+        WHERE DATE_FORMAT(create_time, '%Y%m') = DATE_FORMAT(CURDATE(), '%Y%m')
+    </select>
+    <select id="queryTotal" resultType="java.lang.Integer">
+        select count(1)
+        from project
+    </select>
+    <select id="queryPersonTotal" resultType="java.lang.Integer">
+        select count(1)
+        from project where type=1
+    </select>
+    <select id="queryGroupTotal" resultType="java.lang.Integer">
+        select count(1)
+        from project where type=2
+    </select>
+    <select id="approvalUserRole" resultType="com.java2e.martin.extension.ncnb.entity.ProjectRole">
+        SELECT pr.*
+        from project_role pr
+                 INNER JOIN project_user pu on pr.project_id = pu.project_id and pr.role_id = pu.role_id
+        where pu.user_id = #{userId}
+          and pu.project_id = #{projectId}
+          and (pr.role_code LIKE '%_0' OR pr.role_code LIKE '%_1' )
+    </select>
+    <select id="projectCount" resultType="java.lang.Integer"
+            parameterType="java.util.Map">
+        SELECT count(1) from project p
+        inner JOIN project_user pu on pu.project_id=p.id
+        where
+            p.del_flag=0 and pu.user_id=#{param.userId} and p.type =#{param.type}
+    </select>
+    <select id="projectCountByUserIdAndType" resultType="java.lang.Integer"
+            parameterType="java.util.Map">
+        SELECT count(1) from project p
+        inner JOIN project_user pu on pu.project_id=p.id
+        where
+            p.del_flag=0 and pu.user_id=#{userId} and p.type =#{type}
+    </select>
+    <select id="projectVersionCount" resultType="java.lang.Integer"
+            parameterType="java.util.Map">
+        SELECT count(1) from project p
+        inner JOIN project_user pu on pu.project_id=p.id
+        inner join db_version dv on p.id=dv.project_id
+        where
+            p.del_flag=0 and pu.user_id=#{param.userId}
+    </select>
+</mapper>

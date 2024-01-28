@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.java2e.martin.extension.ncnb.mapper.ApprovalMapper">
+
+    <insert id="syncBdVersion" parameterType="java.lang.String">
+        INSERT INTO db_version (
+            id,
+            db_version,
+            version_desc,
+            project_id,
+            db_key,
+            create_time,
+            creator
+        )
+        SELECT
+            UUID_SHORT(),
+            version,
+            version_desc,
+            project_id,
+            db_key,
+            now(),
+            #{userId}
+        from db_change
+        WHERE id=#{versionId}
+    </insert>
+</mapper>

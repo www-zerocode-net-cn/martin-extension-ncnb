@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- 定义模块名-->
+    <springProperty scop="context" name="SPRING_APPLICATION_NAME" source="spring.application.name"
+                    defaultValue="martin-extension-ncnb"/>
+    <!--引用公共日志-->
+    <include resource="com.java2e.martin.common.log/base-logback.xml"/>
+
+</configuration>

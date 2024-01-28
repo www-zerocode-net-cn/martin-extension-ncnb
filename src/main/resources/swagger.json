@@ -1,0 +1,3407 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Snippets API",
+    "description": "Test description",
+    "termsOfService": "https://www.google.com/policies/terms/",
+    "contact": {
+      "email": "contact@snippets.local"
+    },
+    "license": {
+      "name": "BSD License"
+    },
+    "version": "v1"
+  },
+  "host": "loco.zerocode.net.cn",
+  "schemes": [
+    "http"
+  ],
+  "basePath": "/",
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "securityDefinitions": {
+    "basic": {
+      "type": "basic"
+    }
+  },
+  "security": [
+    {
+      "basic": []
+    }
+  ],
+  "paths": {
+    "/apimanager/": {
+      "get": {
+        "operationId": "list",
+        "summary": "接口数据管理",
+        "description": "查询",
+        "parameters": [
+          {
+            "name": "description",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "creator",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "modifier",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "dept_belong_id",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "update_datetime",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "create_datetime",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "is_deleted",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "schema",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "typed",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "A search term.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "ordering",
+            "in": "query",
+            "description": "Which field to use when ordering the results.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "A page number within the paginated result set.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "apimanager"
+        ]
+      },
+      "post": {
+        "operationId": "create",
+        "summary": "接口数据管理",
+        "description": "新增",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Apimanager"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Apimanager"
+            }
+          }
+        },
+        "tags": [
+          "apimanager"
+        ]
+      },
+      "parameters": []
+    },
+    "/apimanager/multiple_delete/": {
+      "delete": {
+        "operationId": "multiple_delete",
+        "summary": "接口数据管理",
+        "description": "接口数据管理",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MultiDelete"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "apimanager"
+        ]
+      },
+      "parameters": []
+    },
+    "/apimanager/tree/": {
+      "get": {
+        "operationId": "tree",
+        "summary": "接口数据管理",
+        "description": "接口数据管理",
+        "parameters": [
+          {
+            "name": "description",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "creator",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "modifier",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "dept_belong_id",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "update_datetime",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "create_datetime",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "is_deleted",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "schema",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "typed",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "A search term.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "ordering",
+            "in": "query",
+            "description": "Which field to use when ordering the results.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "A page number within the paginated result set.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "required": [
+                "count",
+                "results"
+              ],
+              "type": "object",
+              "properties": {
+                "count": {
+                  "type": "integer"
+                },
+                "next": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "previous": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Apimanager"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "apimanager"
+        ]
+      },
+      "parameters": []
+    },
+    "/apimanager/{id}/": {
+      "get": {
+        "operationId": "read",
+        "summary": "接口数据管理",
+        "description": "单例",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Apimanager"
+            }
+          }
+        },
+        "tags": [
+          "apimanager"
+        ]
+      },
+      "put": {
+        "operationId": "update",
+        "summary": "接口数据管理",
+        "description": "修改",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Apimanager"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Apimanager"
+            }
+          }
+        },
+        "tags": [
+          "apimanager"
+        ]
+      },
+      "patch": {
+        "operationId": "partial_update",
+        "summary": "接口数据管理",
+        "description": "接口数据管理",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Apimanager"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Apimanager"
+            }
+          }
+        },
+        "tags": [
+          "apimanager"
+        ]
+      },
+      "delete": {
+        "operationId": "delete",
+        "summary": "接口数据管理",
+        "description": "删除",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "apimanager"
+        ]
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "Id",
+          "required": true,
+          "type": "integer"
+        }
+      ]
+    },
+    "/asset/": {
+      "get": {
+        "operationId": "list",
+        "summary": "物料管理",
+        "description": "查询",
+        "parameters": [
+          {
+            "name": "description",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "creator",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "modifier",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "dept_belong_id",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "update_datetime",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "create_datetime",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "is_deleted",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "data",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "is_use",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "A search term.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "ordering",
+            "in": "query",
+            "description": "Which field to use when ordering the results.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "A page number within the paginated result set.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "asset"
+        ]
+      },
+      "post": {
+        "operationId": "create",
+        "summary": "物料管理",
+        "description": "新增",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Assets"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Assets"
+            }
+          }
+        },
+        "tags": [
+          "asset"
+        ]
+      },
+      "parameters": []
+    },
+    "/asset/multiple_delete/": {
+      "delete": {
+        "operationId": "multiple_delete",
+        "summary": "物料管理",
+        "description": "物料管理",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MultiDelete"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "asset"
+        ]
+      },
+      "parameters": []
+    },
+    "/asset/{id}/": {
+      "get": {
+        "operationId": "read",
+        "summary": "物料管理",
+        "description": "单例",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Assets"
+            }
+          }
+        },
+        "tags": [
+          "asset"
+        ]
+      },
+      "put": {
+        "operationId": "update",
+        "summary": "物料管理",
+        "description": "修改",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Assets"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Assets"
+            }
+          }
+        },
+        "tags": [
+          "asset"
+        ]
+      },
+      "patch": {
+        "operationId": "partial_update",
+        "summary": "物料管理",
+        "description": "物料管理",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Assets"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Assets"
+            }
+          }
+        },
+        "tags": [
+          "asset"
+        ]
+      },
+      "delete": {
+        "operationId": "delete",
+        "summary": "物料管理",
+        "description": "删除",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "asset"
+        ]
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "A unique integer value identifying this 物料数据.",
+          "required": true,
+          "type": "integer"
+        }
+      ]
+    },
+    "/block/": {
+      "get": {
+        "operationId": "list",
+        "summary": "区块管理",
+        "description": "查询",
+        "parameters": [
+          {
+            "name": "name__icontains",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "blockTypeId",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "A search term.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "ordering",
+            "in": "query",
+            "description": "Which field to use when ordering the results.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "A page number within the paginated result set.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "block"
+        ]
+      },
+      "post": {
+        "operationId": "create",
+        "summary": "区块管理",
+        "description": "新增",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Block"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Block"
+            }
+          }
+        },
+        "tags": [
+          "block"
+        ]
+      },
+      "parameters": []
+    },
+    "/block/multiple_delete/": {
+      "delete": {
+        "operationId": "multiple_delete",
+        "summary": "区块管理",
+        "description": "区块管理",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MultiDelete"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "block"
+        ]
+      },
+      "parameters": []
+    },
+    "/block/{id}/": {
+      "get": {
+        "operationId": "read",
+        "summary": "区块管理",
+        "description": "单例",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Block"
+            }
+          }
+        },
+        "tags": [
+          "block"
+        ]
+      },
+      "put": {
+        "operationId": "update",
+        "summary": "区块管理",
+        "description": "修改",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Block"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Block"
+            }
+          }
+        },
+        "tags": [
+          "block"
+        ]
+      },
+      "patch": {
+        "operationId": "partial_update",
+        "summary": "区块管理",
+        "description": "区块管理",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Block"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Block"
+            }
+          }
+        },
+        "tags": [
+          "block"
+        ]
+      },
+      "delete": {
+        "operationId": "delete",
+        "summary": "区块管理",
+        "description": "删除",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "block"
+        ]
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "A unique integer value identifying this 区块管理.",
+          "required": true,
+          "type": "integer"
+        }
+      ]
+    },
+    "/datasource/": {
+      "get": {
+        "operationId": "list",
+        "summary": "在线接口管理",
+        "description": "查询",
+        "parameters": [
+          {
+            "name": "description",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "creator",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "modifier",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "dept_belong_id",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "update_datetime",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "create_datetime",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "is_deleted",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "datatype",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "database",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "user",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "passwod",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "key",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "A search term.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "ordering",
+            "in": "query",
+            "description": "Which field to use when ordering the results.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "A page number within the paginated result set.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "datasource"
+        ]
+      },
+      "post": {
+        "operationId": "create",
+        "summary": "在线接口管理",
+        "description": "新增",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Datasource"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Datasource"
+            }
+          }
+        },
+        "tags": [
+          "datasource"
+        ]
+      },
+      "parameters": []
+    },
+    "/datasource/multiple_delete/": {
+      "delete": {
+        "operationId": "multiple_delete",
+        "summary": "在线接口管理",
+        "description": "在线接口管理",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MultiDelete"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "datasource"
+        ]
+      },
+      "parameters": []
+    },
+    "/datasource/tree/": {
+      "get": {
+        "operationId": "tree_read",
+        "summary": "在线接口管理",
+        "description": "用于前端菜单树结构树",
+        "parameters": [
+          {
+            "name": "description",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "creator",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "modifier",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "dept_belong_id",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "update_datetime",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "create_datetime",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "is_deleted",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "datatype",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "database",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "user",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "passwod",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "key",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "A search term.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "ordering",
+            "in": "query",
+            "description": "Which field to use when ordering the results.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "A page number within the paginated result set.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "required": [
+                "count",
+                "results"
+              ],
+              "type": "object",
+              "properties": {
+                "count": {
+                  "type": "integer"
+                },
+                "next": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "previous": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Datasource"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "datasource"
+        ]
+      },
+      "parameters": []
+    },
+    "/datasource/{id}/": {
+      "get": {
+        "operationId": "read",
+        "summary": "在线接口管理",
+        "description": "单例",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Datasource"
+            }
+          }
+        },
+        "tags": [
+          "datasource"
+        ]
+      },
+      "put": {
+        "operationId": "update",
+        "summary": "在线接口管理",
+        "description": "修改",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Datasource"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Datasource"
+            }
+          }
+        },
+        "tags": [
+          "datasource"
+        ]
+      },
+      "patch": {
+        "operationId": "partial_update",
+        "summary": "在线接口管理",
+        "description": "在线接口管理",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Datasource"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Datasource"
+            }
+          }
+        },
+        "tags": [
+          "datasource"
+        ]
+      },
+      "delete": {
+        "operationId": "delete",
+        "summary": "在线接口管理",
+        "description": "删除",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "datasource"
+        ]
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "A unique integer value identifying this 数据源管理.",
+          "required": true,
+          "type": "integer"
+        }
+      ]
+    },
+    "/datatype/": {
+      "get": {
+        "operationId": "list",
+        "summary": "数据类型管理",
+        "description": "查询",
+        "parameters": [
+          {
+            "name": "description",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "creator",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "modifier",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "dept_belong_id",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "update_datetime",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "create_datetime",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "is_deleted",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "typed",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "pid",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "A search term.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "ordering",
+            "in": "query",
+            "description": "Which field to use when ordering the results.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "A page number within the paginated result set.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "datatype"
+        ]
+      },
+      "post": {
+        "operationId": "create",
+        "summary": "数据类型管理",
+        "description": "新增",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Lowdatatyped"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Lowdatatyped"
+            }
+          }
+        },
+        "tags": [
+          "datatype"
+        ]
+      },
+      "parameters": []
+    },
+    "/datatype/multiple_delete/": {
+      "delete": {
+        "operationId": "multiple_delete",
+        "summary": "数据类型管理",
+        "description": "数据类型管理",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MultiDelete"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "datatype"
+        ]
+      },
+      "parameters": []
+    },
+    "/datatype/tree/": {
+      "get": {
+        "operationId": "tree_read",
+        "summary": "数据类型管理",
+        "description": "用于前端菜单树结构树",
+        "parameters": [
+          {
+            "name": "description",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "creator",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "modifier",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "dept_belong_id",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "update_datetime",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "create_datetime",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "is_deleted",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "typed",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "pid",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "A search term.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "ordering",
+            "in": "query",
+            "description": "Which field to use when ordering the results.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "A page number within the paginated result set.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "required": [
+                "count",
+                "results"
+              ],
+              "type": "object",
+              "properties": {
+                "count": {
+                  "type": "integer"
+                },
+                "next": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "previous": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Lowdatatyped"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "datatype"
+        ]
+      },
+      "parameters": []
+    },
+    "/datatype/treev2/": {
+      "get": {
+        "operationId": "treev2",
+        "summary": "数据类型管理",
+        "description": "用于前端菜单树结构树",
+        "parameters": [
+          {
+            "name": "description",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "creator",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "modifier",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "dept_belong_id",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "update_datetime",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "create_datetime",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "is_deleted",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "typed",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "pid",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "A search term.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "ordering",
+            "in": "query",
+            "description": "Which field to use when ordering the results.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "A page number within the paginated result set.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "required": [
+                "count",
+                "results"
+              ],
+              "type": "object",
+              "properties": {
+                "count": {
+                  "type": "integer"
+                },
+                "next": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "previous": {
+                  "type": "string",
+                  "format": "uri",
+                  "x-nullable": true
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Lowdatatyped"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "datatype"
+        ]
+      },
+      "parameters": []
+    },
+    "/datatype/{id}/": {
+      "get": {
+        "operationId": "read",
+        "summary": "数据类型管理",
+        "description": "单例",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Lowdatatyped"
+            }
+          }
+        },
+        "tags": [
+          "datatype"
+        ]
+      },
+      "put": {
+        "operationId": "update",
+        "summary": "数据类型管理",
+        "description": "修改",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Lowdatatyped"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Lowdatatyped"
+            }
+          }
+        },
+        "tags": [
+          "datatype"
+        ]
+      },
+      "patch": {
+        "operationId": "partial_update",
+        "summary": "数据类型管理",
+        "description": "数据类型管理",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Lowdatatyped"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Lowdatatyped"
+            }
+          }
+        },
+        "tags": [
+          "datatype"
+        ]
+      },
+      "delete": {
+        "operationId": "delete",
+        "summary": "数据类型管理",
+        "description": "删除",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "datatype"
+        ]
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "A unique integer value identifying this 数据类型.",
+          "required": true,
+          "type": "integer"
+        }
+      ]
+    },
+    "/getassets/": {
+      "get": {
+        "operationId": "list",
+        "summary": "物料获取-无需登入",
+        "description": "查询",
+        "parameters": [
+          {
+            "name": "description",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "creator",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "modifier",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "dept_belong_id",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "update_datetime",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "create_datetime",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "is_deleted",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "data",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "is_use",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "A search term.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "ordering",
+            "in": "query",
+            "description": "Which field to use when ordering the results.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "A page number within the paginated result set.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "getassets"
+        ]
+      },
+      "parameters": []
+    },
+    "/onlineapi/": {
+      "get": {
+        "operationId": "list",
+        "summary": "在线接口管理",
+        "description": "查询",
+        "parameters": [
+          {
+            "name": "description",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "creator",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "modifier",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "dept_belong_id",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "update_datetime",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "create_datetime",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "is_deleted",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "data_source",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "datasource",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "typed",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "methods",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "cacheid",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "url",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sql",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "parameter",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "A search term.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "ordering",
+            "in": "query",
+            "description": "Which field to use when ordering the results.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "A page number within the paginated result set.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "onlineapi"
+        ]
+      },
+      "post": {
+        "operationId": "create",
+        "summary": "在线接口管理",
+        "description": "新增",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Onlineapi"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Onlineapi"
+            }
+          }
+        },
+        "tags": [
+          "onlineapi"
+        ]
+      },
+      "parameters": []
+    },
+    "/onlineapi/multiple_delete/": {
+      "delete": {
+        "operationId": "multiple_delete",
+        "summary": "在线接口管理",
+        "description": "在线接口管理",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MultiDelete"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "onlineapi"
+        ]
+      },
+      "parameters": []
+    },
+    "/onlineapi/postapi/": {
+      "post": {
+        "operationId": "postapi",
+        "summary": "在线接口管理",
+        "description": "用于前端菜单树结构树",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Onlineapi"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Onlineapi"
+            }
+          }
+        },
+        "tags": [
+          "onlineapi"
+        ]
+      },
+      "parameters": []
+    },
+    "/onlineapi/{id}/": {
+      "get": {
+        "operationId": "read",
+        "summary": "在线接口管理",
+        "description": "单例",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Onlineapi"
+            }
+          }
+        },
+        "tags": [
+          "onlineapi"
+        ]
+      },
+      "put": {
+        "operationId": "update",
+        "summary": "在线接口管理",
+        "description": "修改",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Onlineapi"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Onlineapi"
+            }
+          }
+        },
+        "tags": [
+          "onlineapi"
+        ]
+      },
+      "patch": {
+        "operationId": "partial_update",
+        "summary": "在线接口管理",
+        "description": "在线接口管理",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Onlineapi"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Onlineapi"
+            }
+          }
+        },
+        "tags": [
+          "onlineapi"
+        ]
+      },
+      "delete": {
+        "operationId": "delete",
+        "summary": "在线接口管理",
+        "description": "删除",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "onlineapi"
+        ]
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "Id",
+          "required": true,
+          "type": "integer"
+        }
+      ]
+    },
+    "/schemadata/": {
+      "get": {
+        "operationId": "list",
+        "summary": "list:查询",
+        "description": "查询",
+        "parameters": [
+          {
+            "name": "description",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "creator",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "modifier",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "dept_belong_id",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "update_datetime",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "create_datetime",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "is_deleted",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "schema",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "menu_id",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "is_login",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Typed",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "A search term.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "ordering",
+            "in": "query",
+            "description": "Which field to use when ordering the results.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "A page number within the paginated result set.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "schemadata"
+        ]
+      },
+      "post": {
+        "operationId": "create",
+        "summary": "list:查询",
+        "description": "新增",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Schema"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Schema"
+            }
+          }
+        },
+        "tags": [
+          "schemadata"
+        ]
+      },
+      "parameters": []
+    },
+    "/schemadata/multiple_delete/": {
+      "delete": {
+        "operationId": "multiple_delete",
+        "summary": "list:查询",
+        "description": "",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MultiDelete"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "schemadata"
+        ]
+      },
+      "parameters": []
+    },
+    "/schemadata/{id}/": {
+      "get": {
+        "operationId": "read",
+        "summary": "list:查询",
+        "description": "单例",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Schema"
+            }
+          }
+        },
+        "tags": [
+          "schemadata"
+        ]
+      },
+      "put": {
+        "operationId": "update",
+        "summary": "list:查询",
+        "description": "修改",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Schema"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Schema"
+            }
+          }
+        },
+        "tags": [
+          "schemadata"
+        ]
+      },
+      "patch": {
+        "operationId": "partial_update",
+        "summary": "list:查询",
+        "description": "",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Schema"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Schema"
+            }
+          }
+        },
+        "tags": [
+          "schemadata"
+        ]
+      },
+      "delete": {
+        "operationId": "delete",
+        "summary": "list:查询",
+        "description": "删除",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "schemadata"
+        ]
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "A unique integer value identifying this 模板.",
+          "required": true,
+          "type": "integer"
+        }
+      ]
+    },
+    "/schemadata/{id}/getMenuSchema/": {
+      "get": {
+        "operationId": "getMenuSchema",
+        "summary": "list:查询",
+        "description": "/id/ 根据ID获取菜单的模板数据",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Schema"
+            }
+          }
+        },
+        "tags": [
+          "schemadata"
+        ]
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "A unique integer value identifying this 模板.",
+          "required": true,
+          "type": "integer"
+        }
+      ]
+    }
+  },
+  "definitions": {
+    "Apimanager": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "title": "Id",
+          "description": "Id",
+          "type": "integer",
+          "readOnly": true
+        },
+        "modifier_name": {
+          "title": "Modifier name",
+          "type": "string",
+          "readOnly": true
+        },
+        "creator_name": {
+          "title": "Creator name",
+          "type": "string",
+          "readOnly": true
+        },
+        "create_datetime": {
+          "title": "Create datetime",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "update_datetime": {
+          "title": "Update datetime",
+          "type": "string",
+          "format": "date-time"
+        },
+        "description": {
+          "title": "描述",
+          "description": "描述",
+          "type": "string",
+          "x-nullable": true
+        },
+        "modifier": {
+          "title": "修改人",
+          "description": "修改人",
+          "type": "string",
+          "maxLength": 255,
+          "x-nullable": true
+        },
+        "dept_belong_id": {
+          "title": "数据归属部门",
+          "description": "数据归属部门",
+          "type": "string",
+          "maxLength": 255,
+          "x-nullable": true
+        },
+        "is_deleted": {
+          "title": "是否软删除",
+          "description": "是否软删除",
+          "type": "integer",
+          "maximum": 9223372036854776000,
+          "minimum": -9223372036854776000
+        },
+        "name": {
+          "title": "接口名称",
+          "type": "string",
+          "maxLength": 200,
+          "minLength": 1,
+          "x-nullable": true
+        },
+        "schema": {
+          "title": "接口数据",
+          "type": "string",
+          "minLength": 1,
+          "x-nullable": true
+        },
+        "creator": {
+          "title": "创建人",
+          "description": "创建人",
+          "type": "integer",
+          "x-nullable": true
+        },
+        "typed": {
+          "title": "数据类型",
+          "type": "integer",
+          "x-nullable": true
+        }
+      }
+    },
+    "Assets": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "integer",
+          "readOnly": true
+        },
+        "modifier_name": {
+          "title": "Modifier name",
+          "type": "string",
+          "readOnly": true
+        },
+        "creator_name": {
+          "title": "Creator name",
+          "type": "string",
+          "readOnly": true
+        },
+        "create_datetime": {
+          "title": "Create datetime",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "update_datetime": {
+          "title": "Update datetime",
+          "type": "string",
+          "format": "date-time"
+        },
+        "description": {
+          "title": "描述",
+          "description": "描述",
+          "type": "string",
+          "x-nullable": true
+        },
+        "modifier": {
+          "title": "修改人",
+          "description": "修改人",
+          "type": "string",
+          "maxLength": 255,
+          "x-nullable": true
+        },
+        "dept_belong_id": {
+          "title": "数据归属部门",
+          "description": "数据归属部门",
+          "type": "string",
+          "maxLength": 255,
+          "x-nullable": true
+        },
+        "is_deleted": {
+          "title": "是否软删除",
+          "description": "是否软删除",
+          "type": "integer",
+          "maximum": 9223372036854776000,
+          "minimum": -9223372036854776000
+        },
+        "data": {
+          "title": "物料数据",
+          "type": "string",
+          "minLength": 1,
+          "x-nullable": true
+        },
+        "version": {
+          "title": "版本",
+          "type": "string",
+          "maxLength": 20,
+          "minLength": 1,
+          "x-nullable": true
+        },
+        "is_use": {
+          "title": "是否可用",
+          "type": "integer",
+          "enum": [
+            1,
+            0
+          ],
+          "x-nullable": true
+        },
+        "creator": {
+          "title": "创建人",
+          "description": "创建人",
+          "type": "integer",
+          "x-nullable": true
+        }
+      }
+    },
+    "Block": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "integer",
+          "readOnly": true
+        },
+        "modifier_name": {
+          "title": "Modifier name",
+          "type": "string",
+          "readOnly": true
+        },
+        "creator_name": {
+          "title": "Creator name",
+          "type": "string",
+          "readOnly": true
+        },
+        "create_datetime": {
+          "title": "Create datetime",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "update_datetime": {
+          "title": "Update datetime",
+          "type": "string",
+          "format": "date-time"
+        },
+        "description": {
+          "title": "描述",
+          "description": "描述",
+          "type": "string",
+          "x-nullable": true
+        },
+        "modifier": {
+          "title": "修改人",
+          "description": "修改人",
+          "type": "string",
+          "maxLength": 255,
+          "x-nullable": true
+        },
+        "dept_belong_id": {
+          "title": "数据归属部门",
+          "description": "数据归属部门",
+          "type": "string",
+          "maxLength": 255,
+          "x-nullable": true
+        },
+        "is_deleted": {
+          "title": "是否软删除",
+          "description": "是否软删除",
+          "type": "integer",
+          "maximum": 9223372036854776000,
+          "minimum": -9223372036854776000
+        },
+        "name": {
+          "title": "中文名称",
+          "type": "string",
+          "maxLength": 200,
+          "minLength": 1,
+          "x-nullable": true
+        },
+        "screenshot": {
+          "title": "截图",
+          "type": "string",
+          "minLength": 1,
+          "x-nullable": true
+        },
+        "schema": {
+          "title": "Schema信息",
+          "type": "string",
+          "minLength": 1,
+          "x-nullable": true
+        },
+        "creator": {
+          "title": "创建人",
+          "description": "创建人",
+          "type": "integer",
+          "x-nullable": true
+        },
+        "blockTypeId": {
+          "title": "类型",
+          "type": "integer",
+          "x-nullable": true
+        }
+      }
+    },
+    "Datasource": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "integer",
+          "readOnly": true
+        },
+        "modifier_name": {
+          "title": "Modifier name",
+          "type": "string",
+          "readOnly": true
+        },
+        "creator_name": {
+          "title": "Creator name",
+          "type": "string",
+          "readOnly": true
+        },
+        "create_datetime": {
+          "title": "Create datetime",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "update_datetime": {
+          "title": "Update datetime",
+          "type": "string",
+          "format": "date-time"
+        },
+        "description": {
+          "title": "描述",
+          "description": "描述",
+          "type": "string",
+          "x-nullable": true
+        },
+        "modifier": {
+          "title": "修改人",
+          "description": "修改人",
+          "type": "string",
+          "maxLength": 255,
+          "x-nullable": true
+        },
+        "dept_belong_id": {
+          "title": "数据归属部门",
+          "description": "数据归属部门",
+          "type": "string",
+          "maxLength": 255,
+          "x-nullable": true
+        },
+        "is_deleted": {
+          "title": "是否软删除",
+          "description": "是否软删除",
+          "type": "integer",
+          "maximum": 9223372036854776000,
+          "minimum": -9223372036854776000
+        },
+        "name": {
+          "title": "数据源名称",
+          "type": "string",
+          "maxLength": 200,
+          "minLength": 1,
+          "x-nullable": true
+        },
+        "datatype": {
+          "title": "数据库类型",
+          "description": "数据库类型",
+          "type": "integer",
+          "maximum": 2147483647,
+          "minimum": -2147483648
+        },
+        "database": {
+          "title": "数据库名称",
+          "type": "string",
+          "maxLength": 200,
+          "minLength": 1,
+          "x-nullable": true
+        },
+        "user": {
+          "title": "账号",
+          "type": "string",
+          "maxLength": 200,
+          "x-nullable": true
+        },
+        "status": {
+          "title": "状态",
+          "description": "是否发布",
+          "type": "integer",
+          "maximum": 2147483647,
+          "minimum": -2147483648,
+          "x-nullable": true
+        },
+        "passwod": {
+          "title": "密码",
+          "type": "string",
+          "maxLength": 200,
+          "x-nullable": true
+        },
+        "key": {
+          "title": "Key",
+          "type": "string",
+          "maxLength": 200,
+          "x-nullable": true
+        },
+        "creator": {
+          "title": "创建人",
+          "description": "创建人",
+          "type": "integer",
+          "x-nullable": true
+        }
+      }
+    },
+    "Lowdatatyped": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "integer",
+          "readOnly": true
+        },
+        "modifier_name": {
+          "title": "Modifier name",
+          "type": "string",
+          "readOnly": true
+        },
+        "creator_name": {
+          "title": "Creator name",
+          "type": "string",
+          "readOnly": true
+        },
+        "create_datetime": {
+          "title": "Create datetime",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "update_datetime": {
+          "title": "Update datetime",
+          "type": "string",
+          "format": "date-time"
+        },
+        "description": {
+          "title": "描述",
+          "description": "描述",
+          "type": "string",
+          "x-nullable": true
+        },
+        "modifier": {
+          "title": "修改人",
+          "description": "修改人",
+          "type": "string",
+          "maxLength": 255,
+          "x-nullable": true
+        },
+        "dept_belong_id": {
+          "title": "数据归属部门",
+          "description": "数据归属部门",
+          "type": "string",
+          "maxLength": 255,
+          "x-nullable": true
+        },
+        "is_deleted": {
+          "title": "是否软删除",
+          "description": "是否软删除",
+          "type": "integer",
+          "maximum": 9223372036854776000,
+          "minimum": -9223372036854776000
+        },
+        "name": {
+          "title": "名称",
+          "type": "string",
+          "maxLength": 200,
+          "minLength": 1,
+          "x-nullable": true
+        },
+        "typed": {
+          "title": "类型",
+          "type": "integer",
+          "enum": [
+            1,
+            2,
+            3
+          ],
+          "x-nullable": true
+        },
+        "creator": {
+          "title": "创建人",
+          "description": "创建人",
+          "type": "integer",
+          "x-nullable": true
+        },
+        "pid": {
+          "title": "父ID",
+          "type": "integer",
+          "x-nullable": true
+        }
+      }
+    },
+    "Onlineapi": {
+      "required": [
+        "url"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "title": "Id",
+          "description": "Id",
+          "type": "integer",
+          "readOnly": true
+        },
+        "modifier_name": {
+          "title": "Modifier name",
+          "type": "string",
+          "readOnly": true
+        },
+        "creator_name": {
+          "title": "Creator name",
+          "type": "string",
+          "readOnly": true
+        },
+        "create_datetime": {
+          "title": "Create datetime",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "update_datetime": {
+          "title": "Update datetime",
+          "type": "string",
+          "format": "date-time"
+        },
+        "description": {
+          "title": "描述",
+          "description": "描述",
+          "type": "string",
+          "x-nullable": true
+        },
+        "modifier": {
+          "title": "修改人",
+          "description": "修改人",
+          "type": "string",
+          "maxLength": 255,
+          "x-nullable": true
+        },
+        "dept_belong_id": {
+          "title": "数据归属部门",
+          "description": "数据归属部门",
+          "type": "string",
+          "maxLength": 255,
+          "x-nullable": true
+        },
+        "is_deleted": {
+          "title": "是否软删除",
+          "description": "是否软删除",
+          "type": "integer",
+          "maximum": 9223372036854776000,
+          "minimum": -9223372036854776000
+        },
+        "name": {
+          "title": "接口名称",
+          "type": "string",
+          "maxLength": 200,
+          "minLength": 1,
+          "x-nullable": true
+        },
+        "data_source": {
+          "title": "数据源类型",
+          "type": "integer",
+          "maximum": 2147483647,
+          "minimum": -2147483648,
+          "x-nullable": true
+        },
+        "methods": {
+          "title": "接口方法",
+          "type": "integer",
+          "maximum": 2147483647,
+          "minimum": -2147483648,
+          "x-nullable": true
+        },
+        "sort": {
+          "title": "显示排序",
+          "description": "显示排序",
+          "type": "integer",
+          "maximum": 2147483647,
+          "minimum": -2147483648
+        },
+        "status": {
+          "title": "状态",
+          "description": "是否发布",
+          "type": "integer",
+          "maximum": 2147483647,
+          "minimum": -2147483648,
+          "x-nullable": true
+        },
+        "cacheid": {
+          "title": "接口地址",
+          "type": "string",
+          "maxLength": 30,
+          "minLength": 1,
+          "x-nullable": true
+        },
+        "url": {
+          "title": "接口地址",
+          "type": "string",
+          "maxLength": 30,
+          "minLength": 1
+        },
+        "sql": {
+          "title": "Sql",
+          "description": "sql",
+          "type": "string",
+          "x-nullable": true
+        },
+        "parameter": {
+          "title": "入参json数据",
+          "description": "入参json数据",
+          "type": "string",
+          "x-nullable": true
+        },
+        "creator": {
+          "title": "创建人",
+          "description": "创建人",
+          "type": "integer",
+          "x-nullable": true
+        },
+        "datasource": {
+          "title": "数据源",
+          "type": "integer",
+          "x-nullable": true
+        },
+        "typed": {
+          "title": "数据类型",
+          "type": "integer",
+          "x-nullable": true
+        }
+      }
+    },
+    "Schema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "integer",
+          "readOnly": true
+        },
+        "modifier_name": {
+          "title": "Modifier name",
+          "type": "string",
+          "readOnly": true
+        },
+        "creator_name": {
+          "title": "Creator name",
+          "type": "string",
+          "readOnly": true
+        },
+        "create_datetime": {
+          "title": "Create datetime",
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "update_datetime": {
+          "title": "Update datetime",
+          "type": "string",
+          "format": "date-time"
+        },
+        "description": {
+          "title": "描述",
+          "description": "描述",
+          "type": "string",
+          "x-nullable": true
+        },
+        "modifier": {
+          "title": "修改人",
+          "description": "修改人",
+          "type": "string",
+          "maxLength": 255,
+          "x-nullable": true
+        },
+        "dept_belong_id": {
+          "title": "数据归属部门",
+          "description": "数据归属部门",
+          "type": "string",
+          "maxLength": 255,
+          "x-nullable": true
+        },
+        "is_deleted": {
+          "title": "是否软删除",
+          "description": "是否软删除",
+          "type": "integer",
+          "maximum": 9223372036854776000,
+          "minimum": -9223372036854776000
+        },
+        "name": {
+          "title": "模板名称",
+          "type": "string",
+          "maxLength": 200,
+          "minLength": 1,
+          "x-nullable": true
+        },
+        "schema": {
+          "title": "模板数据",
+          "type": "string",
+          "minLength": 1,
+          "x-nullable": true
+        },
+        "menu_id": {
+          "title": "菜单ID",
+          "type": "integer",
+          "maximum": 9223372036854776000,
+          "minimum": -9223372036854776000,
+          "x-nullable": true
+        },
+        "is_login": {
+          "title": "是否登入",
+          "type": "integer",
+          "enum": [
+            0,
+            1
+          ],
+          "x-nullable": true
+        },
+        "creator": {
+          "title": "创建人",
+          "description": "创建人",
+          "type": "integer",
+          "x-nullable": true
+        },
+        "Typed": {
+          "title": "数据类型",
+          "type": "integer",
+          "x-nullable": true
+        }
+      }
+    },
+    "MultiDelete": {
+      "type": "object",
+      "properties": {
+        "keys": {
+          "description": "主键列表",
+          "type": "array",
+          "items": "string"
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "token",
+      "description": "认证相关"
+    }
+  ]
+}

@@ -1,0 +1,110 @@
+import {AnyAction, Reducer} from 'redux';
+import {EffectsCommandMap} from 'dva';
+
+import {TableListItem} from '@/components/StandardTable';
+import {TableListData} from '@/components/Page/TablePage';
+
+import {
+  add$!{entity},
+  deleteBatch$!{entity}s,
+  delete$!{entity},
+  edit$!{entity},
+  page$!{entity}s,
+} from './service';
+
+export interface $!{entity}ListItem extends TableListItem {
+#foreach($field in ${table.fields})
+    #set($ignores = ["delFlag","tenantId"])
+    #if(!$ignores.contains($!field.propertyName))
+      #if( $!{field.propertyName} == "id")
+          $!{field.propertyName}: number;
+      #else
+          $!{field.propertyName}: string;
+      #end
+    #end
+#end
+}
+
+export interface $!{entity}StateType {
+  data: TableListData<$!{entity}ListItem>;
+}
+
+export type Effect = (
+  action: AnyAction,
+  effects: EffectsCommandMap & { select: <T>(func: (state: $!{entity}StateType) => T) => T },
+) => void;
+
+export interface $!{entity}ModelType {
+  namespace: string;
+  state: $!{entity}StateType;
+  effects: {
+    page: Effect;
+    add: Effect;
+    delete: Effect;
+    deleteBatch: Effect;
+    update: Effect;
+  };
+  reducers: {
+    save: Reducer<$!{entity}StateType>;
+  };
+}
+
+
+// @ts-ignore
+const $!{entity}Model: $!{entity}ModelType = {
+  namespace: '${cfg.moduleName}_${table.entityPath}',
+
+  state: {
+    data: {
+      list: [],
+      pagination: {},
+    },
+  },
+
+  effects: {
+    * page({payload}, {call, put}) {
+      const response = yield call(page$!{entity}s, payload);
+      if (response) {
+        yield put({
+          type: 'save',
+          payload: response.data,
+        });
+      }
+    },
+    * add({payload}, {call}) {
+      const response = yield call(add$!{entity}, payload);
+      return response;
+    },
+    * update({payload}, {call}) {
+      const response = yield call(edit$!{entity}, payload);
+      return response;
+    },
+    * delete({payload}, {call}) {
+      const response = yield call(delete$!{entity}, payload);
+      return response;
+    },
+    * deleteBatch({payload}, {call}) {
+      const response = yield call(deleteBatch$!{entity}s, payload);
+      return response;
+    },
+  },
+
+  reducers: {
+    save(state, action) {
+      return {
+        ...state,
+        data: {
+          list: action.payload.records,
+          pagination: {
+            total: action.payload.total,
+            size: action.payload.size,
+            current: action.payload.current,
+          }
+        },
+      };
+    },
+
+  },
+};
+
+export default $!{entity}Model;

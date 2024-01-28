@@ -1,0 +1,147 @@
+package ${package.Controller};
+
+import cn.hutool.core.collection.CollUtil;
+import cn.net.zerocode.loco.entity.MultiDelete;
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
+#if($cfg.moduleName=='system')
+import com.java2e.martin.common.bean.${cfg.moduleName}.$!{entity};
+#else
+import $!{package.Entity}.$!{entity};
+#end
+import $!{package.Service}.$!{table.serviceName};
+import com.java2e.martin.common.core.api.R;
+import com.java2e.martin.common.log.annotation.MartinLog;
+import io.swagger.annotations.Api;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+#if(${restControllerStyle})
+import org.springframework.web.bind.annotation.RestController;
+#else
+import org.springframework.stereotype.Controller;
+#end
+
+import javax.validation.Valid;
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+
+#if(${superControllerClassPackage})
+import ${superControllerClassPackage};
+#end
+
+/**
+ * $!{table.comment}接口
+ *
+ * @author ${author}
+ * @version 1.0
+ * @date ${date}
+ * @describtion
+ * @since 1.0
+ */
+@Slf4j
+#if(${restControllerStyle})
+@RestController
+#else
+@Controller
+#end
+#set($str=$!table.serviceName)
+#set($servicename=$!str.substring(0,1).toLowerCase()+$!str.substring(1))
+#set($entityname=$!entity.substring(0,1).toLowerCase()+$!entity.substring(1))
+#if("$entityname"=="log")
+    #set($entityname="logger")
+#end
+#if("$entityname"=="page")
+    #set($entityname="pages")
+#end
+#if(${kotlin})
+class ${table.controllerName}#if(${superControllerClass}) : ${superControllerClass}()#end
+
+#else
+#if(${superControllerClass})
+public class ${table.controllerName} extends ${superControllerClass} {
+#else
+public class ${table.controllerName} implements $!{entity}Api{
+#end
+
+    @Autowired
+    private $!{table.serviceName} $!servicename;
+
+    @MartinLog("批量删除$!{table.comment}")
+    @DeleteMapping("/batch")
+    public R removeBatch(@RequestBody String ids) {
+        List<String> idList = Arrays.stream(ids.split(",")).collect(Collectors.toList());
+        if (CollUtil.isEmpty(idList)) {
+            return R.failed("ids 不能为空");
+        }
+        return R.ok($!{servicename}.removeByIds(idList));
+    }
+
+
+    @MartinLog("添加核心模型")
+    @Override
+    public R create(@Valid $!{entity} $!{entityname}) {
+        return R.ok($!{servicename}.save($!{entityname}));
+    }
+
+    @MartinLog("删除核心模型")
+    @Override
+    public R delete(Integer id) {
+        return R.ok($!{servicename}.removeById(id));
+    }
+
+    @MartinLog("分页查询核心模型")
+    @SneakyThrows
+    @Override
+    public R list(@Valid Optional<String> description, @Valid Optional<String> creator, @Valid Optional<String> modifier, @Valid Optional<String> deptBelongId, @Valid Optional<String> updateDatetime, @Valid Optional<String> createDatetime, @Valid Optional<BigDecimal> isDeleted, @Valid Optional<String> name, @Valid Optional<String> schema, @Valid Optional<String> typed, @Valid Optional<String> search, @Valid Optional<String> ordering, @Valid Optional<Integer> page, @Valid Optional<Integer> limit) {
+        return R.ok($!{servicename}.getPage(new HashMap()));
+    }
+
+    @MartinLog("批量删除核心模型")
+    @Override
+    public R multipleDelete(@Valid MultiDelete $!{entityname}) {
+        return R.ok($!{servicename}.removeByIds($!{entityname}.getKeys()));
+    }
+
+    @MartinLog("编辑核心模型")
+    @Override
+    public R partialUpdate(Integer id, @Valid $!{entity} $!{entityname}) {
+        return R.ok($!{servicename}.updateById($!{entityname}));
+    }
+
+    @MartinLog("获取单个核心模型")
+    @Override
+    public R read(Integer id) {
+        return R.ok($!{servicename}.getById(id));
+    }
+
+    @MartinLog("获取核心模型树")
+    @Override
+    public R tree(@Valid Optional<String> description, @Valid Optional<String> creator, @Valid Optional<String> modifier, @Valid Optional<String> deptBelongId, @Valid Optional<String> updateDatetime, @Valid Optional<String> createDatetime, @Valid Optional<BigDecimal> isDeleted, @Valid Optional<String> name, @Valid Optional<String> schema, @Valid Optional<String> typed, @Valid Optional<String> search, @Valid Optional<String> ordering, @Valid Optional<Integer> page, @Valid Optional<Integer> limit) {
+        return R.ok(new HashMap<>());
+    }
+
+    @MartinLog("编辑核心模型")
+    @Override
+    public R update(Long id, @Valid $!{entity} $!{entityname}) {
+        $!{entityname}.setId(id);
+        return R.ok($!{servicename}.updateById($!{entityname}));
+    }
+
+
+}
+
+#end

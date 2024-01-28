@@ -1,0 +1,53 @@
+import React from 'react';
+import {message} from 'antd';
+import ProForm, {DrawerForm, ProFormText,} from '@ant-design/pro-form';
+#parse('/templates/ui/components/Import.tsx.vm')
+import {FormattedMessage} from "@@/plugin-locale/localeExports";
+import {add} from "@/services/crud";
+import {useIntl} from "umi";
+import {$!{entity}Item} from "@/pages/${cfg.moduleName}/${table.entityPath}";
+
+export type CopyProps = {
+  refresh: () => void;
+  values: Partial<$!{entity}Item>;
+};
+
+const Copy: React.FC<CopyProps> = (props) => {
+  const intl = useIntl();
+  return (
+    <>
+      <DrawerForm
+        key={"copy"}
+        title={<FormattedMessage id="app.${table.entityPath}.copy-new-${table.entityPath}"/>}
+        width={'30%'}
+        trigger={
+          <a key="copy"><FormattedMessage id="component.common.text.duplicate"/></a>
+        }
+        onFinish={async (values: $!{entity}Item) => {
+          values.id = null;
+          const result = await add('/$!{cfg.moduleCode}/${table.entityPath}', values);
+          if (result.code === 200) {
+            message.success(
+              intl.formatMessage({
+                id: 'component.common.text.copy-success',
+              })
+            );
+            props.refresh();
+          } else {
+            message.error(result.msg);
+          }
+        }}
+        initialValues={props.values}
+      >
+        <ProForm.Group>
+          <ProFormText
+            name="id"
+            hidden={true}
+          />
+        </ProForm.Group>
+#parse('/templates/ui/components/Column.tsx.vm')
+      </DrawerForm>
+    </>
+  );
+};
+export default Copy;

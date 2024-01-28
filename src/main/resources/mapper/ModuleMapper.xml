@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.java2e.martin.extension.ncnb.mapper.ModuleMapper">
+
+    <select id="getModuleById" resultType="com.alibaba.fastjson.JSONObject">
+
+    </select>
+    <select id="getModulePathByName" resultType="java.lang.String">
+        SELECT JSON_SEARCH(projectJSON, 'one', #{name}, null, '$.modules[*].chnname')
+        from project
+        where id = #{id}
+    </select>
+    <select id="getModuleByPath" resultType="com.alibaba.fastjson.JSONObject" parameterType="java.lang.String">
+        SELECT json_extract(projectJSON, JSON_UNQUOTE(
+                REPLACE(JSON_SEARCH(projectJSON, 'one', #{name}, null, ${path}), '.chnname', '')))
+        from project
+        where id = #{id}
+    </select>
+</mapper>

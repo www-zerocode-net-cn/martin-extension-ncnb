@@ -1,0 +1,34 @@
+package ${package.ServiceImpl};
+
+#if($cfg.moduleName=='system')
+import com.java2e.martin.common.bean.${cfg.moduleName}.$!{entity};
+#else
+import $!{package.Entity}.$!{entity};
+#end
+import ${package.Mapper}.${table.mapperName};
+import ${package.Service}.${table.serviceName};
+import com.java2e.martin.common.data.mybatis.service.impl.MartinServiceImpl;
+import org.springframework.stereotype.Service;
+
+/**
+ * $!{table.comment} 服务实现
+ *
+ * @author ${author}
+ * @version 1.0
+ * @date ${date}
+ * @describtion
+ * @since 1.0
+ */
+@Service
+#if(${kotlin})
+open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperName}, ${entity}>(), ${table.serviceName} {
+
+}
+#else
+public class ${table.serviceImplName} extends MartinServiceImpl<${table.mapperName}, ${entity}> implements ${table.serviceName} {
+    @Override
+    protected void setEntity() {
+        this.clz = ${entity}.class;
+    }
+}
+#end
